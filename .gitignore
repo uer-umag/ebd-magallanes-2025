@@ -6,3 +6,5 @@
 .RData
 *_files/
 /_m.html
+
+**/*.quarto_ipynb
