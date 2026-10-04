@@ -1,0 +1,77 @@
+---
+title: "Ciencia y *tecnología*"
+pagetitle: "Ciencia y tecnología · EBD Magallanes 2025"
+subtitle: "El lugar de la ciencia en la vida cotidiana, cómo se informa la ciudadanía y qué espera de su desarrollo"
+description: "Importancia de la ciencia, consumo de contenidos científicos y opiniones sobre el desarrollo científico y tecnológico."
+title-block-banner: img/fotos/ciencia.jpg
+---
+
+```{r}
+source("R/setup_web.R")
+IMP   <- c("Muy importante", "Importante")
+FREC  <- c("Muchas veces", "Siempre")
+ACUER <- c("De acuerdo", "Muy de acuerdo")
+```
+
+## La ciencia en la vida cotidiana
+
+### Importancia de la ciencia {#c1}
+
+```{r}
+bloque("c1",
+  texto = "Pensando en su vida cotidiana, ¿qué tan importante cree usted que es la ciencia en su día a día?",
+  tipo = "escala", n_neg = 2)
+```
+
+`r P("c1", IMP)` considera que la ciencia es importante o muy importante en su día a día. La intensidad varía con el nivel socioeconómico: «muy importante» llega a `r P("c1", "Muy importante", "gse2", "ABC1")` en el grupo ABC1 y a `r P("c1", "Muy importante", "gse2", "D-E")` en el D-E.
+
+### Actividades relacionadas con ciencia y tecnología {#c2}
+
+```{r}
+bloque_bateria("c2",
+  items = c(
+    c2_a = "Usar internet o redes sociales para informarse sobre ciencia y tecnología",
+    c2_b = "Conversar con familiares y amigos sobre ciencia y tecnología",
+    c2_c = "Ver documentales sobre ciencia y tecnología",
+    c2_d = "Leer artículos de ciencia y tecnología en diarios o prensa digital",
+    c2_e = "Escuchar programas de radio o podcasts sobre ciencia y tecnología",
+    c2_f = "Leer artículos en revistas científicas especializadas"
+  ),
+  n_neg = 2, favorables = FREC,
+  etiqueta_fav = "Muchas veces o siempre",
+  texto = "¿Con qué frecuencia (nunca, pocas veces, muchas veces, siempre) realiza usted cada una de las siguientes actividades?")
+```
+
+Internet y las redes sociales son la principal puerta de entrada a la ciencia (`r P("c2_a", FREC)` lo hace muchas veces o siempre). Los formatos más especializados —podcasts, revistas científicas— son minoritarios. Las seis actividades muestran brechas significativas por nivel socioeconómico: en el grupo D-E, `r P("c2_a", "Nunca", "gse2", "D-E")` nunca se informa de ciencia por internet, frente a `r P("c2_a", "Nunca", "gse2", "ABC1")` en el ABC1.
+
+::: {.cita}
+Internet y las redes sociales son la principal puerta de entrada a la ciencia, pero con brechas socioeconómicas en todas las formas de acercarse a ella.
+:::
+
+## Balance y expectativas
+
+### Balance de la ciencia y la tecnología {#c3}
+
+```{r}
+bloque("c3",
+  texto = "Si tuviera que hacer un balance de la ciencia y la tecnología teniendo en cuenta todos los aspectos positivos y negativos, ¿cuál de las siguientes opciones reflejaría mejor su opinión?",
+  tipo = "escala", n_neg = 1, neutral = "Los aspectos positivos y negativos están equilibrados")
+```
+
+Casi la mitad (`r P("c3", "Los aspectos positivos superan a los negativos")`) cree que los aspectos positivos de la ciencia superan a los negativos; solo `r P("c3", "Los aspectos negativos superan a los positivos")` cree lo contrario. El balance positivo alcanza `r P("c3", "Los aspectos positivos superan a los negativos", "gse2", "ABC1")` en el grupo ABC1 y baja a `r P("c3", "Los aspectos positivos superan a los negativos", "gse2", "D-E")` en el D-E, donde predomina la idea de equilibrio.
+
+### Opiniones sobre el desarrollo científico y tecnológico {#c4}
+
+```{r}
+bloque_bateria("c4",
+  items = c(
+    c4_a = "Está haciendo que nuestras vidas sean más fáciles y cómodas",
+    c4_b = "Hace que nuestro modo de vida cambie demasiado rápido",
+    c4_c = "Debería recibir más financiamiento del Estado"
+  ),
+  n_neg = 2, neutral = "Ni de acuerdo ni en desacuerdo", favorables = ACUER,
+  etiqueta_fav = "De acuerdo o muy de acuerdo",
+  texto = "¿Qué tan de acuerdo o en desacuerdo está usted con las siguientes afirmaciones sobre el desarrollo científico y tecnológico? Escala de 1 a 5.")
+```
+
+Las tres afirmaciones reúnen acuerdos cercanos a ocho de cada diez personas, lo que muestra una visión a la vez entusiasta y cautelosa: la ciencia facilita la vida (`r P("c4_a", ACUER)`), pero también acelera demasiado los cambios (`r P("c4_b", ACUER)`). El respaldo a más financiamiento estatal (`r P("c4_c", ACUER)`) es especialmente alto en el grupo ABC1.

@@ -1,0 +1,189 @@
+---
+title: "Visiones ciudadanas sobre el *hidrógeno verde*"
+pagetitle: "Hidrógeno verde · EBD Magallanes 2025"
+subtitle: "Qué sabe la ciudadanía sobre la industria, cuánto la apoya, qué efectos espera y cómo evalúa el proceso de decisión"
+description: "Conocimiento, apoyo, efectos esperados, confianza y gobernanza de la industria del hidrógeno verde en Magallanes."
+title-block-banner: img/fotos/hidrogeno.jpg
+---
+
+```{r}
+source("R/setup_web.R")
+POS4   <- c("Positivo", "Muy positivo")
+ACUER  <- c("De acuerdo", "Muy de acuerdo")
+DESAC  <- c("Muy en desacuerdo", "En desacuerdo")
+CONF   <- c("Bastante confianza", "Mucha confianza")
+INFO   <- c("Bastante informado", "Muy informado")
+POCO   <- c("Nada informado", "Poco informado")
+```
+
+## Conocimiento
+
+### Nivel de información {#b1}
+
+```{r}
+bloque("b1",
+  texto = "En general, ¿qué tan informado/a se siente usted sobre la implementación de la industria del hidrógeno verde en la región?",
+  tipo = "escala", n_neg = 2)
+```
+
+Tres de cada cuatro personas (`r P("b1", POCO)`) se sienten nada o poco informadas sobre la industria. La brecha más marcada es socioeconómica: `r P("b1", INFO, "gse2", "ABC1")` del grupo ABC1 se declara bastante o muy informado, frente a `r P("b1", INFO, "gse2", "D-E")` del grupo D-E. Las mujeres se sienten menos informadas que los hombres.
+
+### Primera idea asociada al hidrógeno verde {#b2}
+
+```{r}
+bloque("b2_macro",
+  texto = "Cuando usted piensa sobre lo que es el hidrógeno verde, ¿cuál es la primera idea que se le viene a la mente? Respuesta espontánea, codificada en macrocategorías.")
+```
+
+El hidrógeno verde evoca sobre todo **trabajo y desarrollo** (`r P("b2_macro", "Trabajo y desarrollo")`) y **combustible** (`r P("b2_macro", "Combustible")`). Las mujeres lo asocian con más frecuencia al medioambiente (`r P("b2_macro", "Medioambiente y naturaleza", "sexo", "Mujer")` frente a `r P("b2_macro", "Medioambiente y naturaleza", "sexo", "Hombre")` de los hombres); los hombres, al combustible.
+
+### Conversación cotidiana {#b6}
+
+```{r}
+bloque("b6",
+  texto = "Durante el último año, ¿con qué frecuencia ha conversado con familiares o amigos sobre el hidrógeno verde y su posible impacto en el desarrollo de la Región de Magallanes?",
+  tipo = "escala", n_neg = 2)
+```
+
+El tema circula poco en la vida cotidiana: `r P("b6", "Nunca")` nunca lo ha conversado y solo `r P("b6", "Con bastante frecuencia")` lo hace con frecuencia. En el grupo D-E más de la mitad (`r P("b6", "Nunca", "gse2", "D-E")`) nunca ha hablado del tema.
+
+## Apoyo y expectativas
+
+### Apoyo a la industria {#b3}
+
+```{r}
+bloque("b3",
+  texto = "En general, ¿cuánto apoya usted el desarrollo de la industria del hidrógeno verde en la Región de Magallanes? Escala de notas de 1 a 7, donde 1 es «en nada» y 7 es «mucho».",
+  tipo = "numerica")
+```
+
+El apoyo es amplio: la nota más frecuente es el 7 (`r P("b3", "7")`) y `r P("b3", c("6", "7"))` pone nota 6 o 7. Fuera de Punta Arenas hay un núcleo de rechazo algo mayor (`r P("b3", "1", "conglomerado", "Resto de la región")` pone nota 1).
+
+### Probabilidad de que los proyectos se concreten {#b4}
+
+```{r}
+bloque("b4",
+  texto = "De acuerdo con lo que usted sabe, ¿qué tan probable es que los proyectos de hidrógeno verde se realicen en la región?",
+  tipo = "escala", n_neg = 2)
+```
+
+`r P("b4", c("Bastante probable", "Muy probable"))` considera bastante o muy probable que los proyectos se materialicen, una expectativa más extendida en el grupo ABC1.
+
+### ¿Beneficio o problema? {#b7}
+
+```{r}
+bloque("b7",
+  texto = "Considerando todos los aspectos positivos y negativos que puede tener el desarrollo de esta industria, ¿usted considera que será…?",
+  orden_fijo = TRUE)
+```
+
+`r P("b7", "Más bien un beneficio")` ve la industria como un beneficio para la región. La valoración cae a medida que baja el nivel socioeconómico: `r P("b7", "Más bien un beneficio", "gse2", "ABC1")` en el grupo ABC1 y `r P("b7", "Más bien un beneficio", "gse2", "D-E")` en el D-E.
+
+### Efecto global esperado {#b13}
+
+```{r}
+bloque("b13",
+  texto = "Considerando todo lo conversado sobre la industria del hidrógeno verde, ¿usted cree que su desarrollo en la región de Magallanes tendrá un efecto…?",
+  tipo = "escala", n_neg = 2, neutral = "Ni positivo ni negativo")
+```
+
+Al cierre del módulo, `r P("b13", POS4)` anticipa un efecto positivo o muy positivo. Es una de las brechas de género más claras de la encuesta: `r P("b13", POS4, "sexo", "Hombre")` entre los hombres y `r P("b13", POS4, "sexo", "Mujer")` entre las mujeres, que se ubican con más frecuencia en la posición neutral.
+
+## Efectos esperados por área {#b8}
+
+```{r}
+bloque_bateria("b8",
+  items = c(
+    b8_a = "Crecimiento económico de la región",
+    b8_b = "Llegada de más personas a la región",
+    b8_c = "Medioambiente",
+    b8_d = "Sueldos y empleos",
+    b8_e = "Costo de la vida",
+    b8_f = "Desarrollo de infraestructura regional",
+    b8_g = "Acceso a servicios de salud y educación",
+    b8_h = "Identidad regional",
+    b8_i = "El paisaje de la región"
+  ),
+  n_neg = 2, favorables = POS4,
+  etiqueta_fav = "Positivo o muy positivo",
+  texto = "Pensando en el siguiente listado de áreas, ¿cómo piensa usted que podría ser el efecto de la industria del hidrógeno verde en…?")
+```
+
+Las expectativas son claramente favorables en lo económico —crecimiento (`r P("b8_a", POS4)`), sueldos y empleos, infraestructura— y se dividen en lo territorial y ambiental. El costo de la vida es el área más disputada: `r P("b8_e", c("Muy negativo", "Negativo"))` anticipa un efecto negativo. El paisaje, el medioambiente y la llegada de más personas también reúnen a más de un tercio de expectativas negativas.
+
+## Confianza y actores
+
+### Confianza en fuentes de información {#b5}
+
+```{r}
+bloque_bateria("b5",
+  items = c(
+    b5_a = "Gobierno de Chile",
+    b5_b = "Gobierno Regional",
+    b5_c = "Comunidad científica (científicos, universidades)",
+    b5_d = "Empresas de los proyectos de hidrógeno verde",
+    b5_e = "ONG y grupos ambientalistas"
+  ),
+  n_neg = 2, favorables = CONF,
+  etiqueta_fav = "Bastante o mucha confianza",
+  texto = "¿Cuánta confianza le inspiran las siguientes fuentes de información sobre los proyectos de hidrógeno verde en la región?")
+```
+
+La comunidad científica es la fuente más confiable (`r P("b5_c", CONF)` le tiene bastante o mucha confianza), seguida de las propias empresas. El Gobierno de Chile es la fuente con menos credibilidad: solo `r P("b5_a", CONF)` confía en la información que entrega.
+
+### Actor con el rol más importante {#b9}
+
+```{r}
+bloque("b9",
+  texto = "¿Quién cree usted que tiene el rol más importante en el desarrollo de la industria del hidrógeno verde? Respuesta única.")
+```
+
+El rol protagónico se reparte entre el Gobierno de Chile (`r P("b9", "El Gobierno de Chile")`) y las empresas (`r P("b9", "Las empresas del Hidrógeno Verde")`). Los hombres ponen más peso en el Gobierno central; las mujeres y los jóvenes, en las empresas.
+
+## Gobernanza del proceso
+
+### Fiscalización, participación e información {#b10}
+
+```{r}
+bloque_bateria("b10",
+  items = c(
+    b10_a = "En la región existe la capacidad para fiscalizar a las industrias del hidrógeno verde",
+    b10_b = "La política sobre hidrógeno verde ha sido participativa",
+    b10_c = "Ha existido información clara y oportuna por parte de las empresas"
+  ),
+  n_neg = 2, neutral = "Ni de acuerdo ni en desacuerdo", favorables = ACUER,
+  etiqueta_fav = "De acuerdo o muy de acuerdo",
+  texto = "¿Qué tan de acuerdo o en desacuerdo está con los siguientes enunciados respecto de la industria del hidrógeno verde?")
+```
+
+El apoyo a la industria convive con una evaluación crítica del proceso. Más de la mitad (`r P("b10_c", DESAC)`) está en desacuerdo con que las empresas hayan entregado información clara y oportuna, y `r P("b10_b", DESAC)` rechaza que la política haya sido participativa. La capacidad regional de fiscalización divide a la opinión en dos mitades.
+
+::: {.cita}
+El apoyo a la industria convive con una evaluación crítica del proceso: más de la mitad cuestiona la información entregada por las empresas.
+:::
+
+### Transparencia y justicia de las decisiones {#b11}
+
+```{r}
+bloque("b11",
+  texto = "¿Cree que los procesos para tomar decisiones sobre el diseño y la implementación de la industria del hidrógeno verde en la región han sido transparentes y justos?",
+  orden_fijo = TRUE)
+```
+
+`r P("b11", "No")` cree que las decisiones **no** han sido transparentes ni justas. La desconfianza es mayor entre las mujeres (`r P("b11", "No", "sexo", "Mujer")`) que entre los hombres (`r P("b11", "No", "sexo", "Hombre")`).
+
+## Infraestructura {#b12}
+
+```{r}
+bloque_bateria("b12",
+  items = c(
+    b12_a = "Que se instalen cerca de mil megamolinos de viento en la pampa",
+    b12_b = "Que se instalen plantas desaladoras en el Estrecho de Magallanes",
+    b12_c = "Que se instalen refinerías de amoníaco en la pampa"
+  ),
+  n_neg = 2, neutral = "Ni de acuerdo ni en desacuerdo", favorables = ACUER,
+  etiqueta_fav = "De acuerdo o muy de acuerdo",
+  texto = "La instalación de la industria del hidrógeno verde considera grandes inversiones en infraestructura en el territorio. Señale qué tan de acuerdo está con lo siguiente.")
+```
+
+La aceptación depende del tipo de infraestructura. Los parques eólicos cuentan con respaldo mayoritario (`r P("b12_a", ACUER)`), las desaladoras dividen y las refinerías de amoníaco generan más rechazo (`r P("b12_c", DESAC)`) que apoyo (`r P("b12_c", ACUER)`). Las mujeres son sistemáticamente más reticentes: solo `r P("b12_c", ACUER, "sexo", "Mujer")` aprueba las refinerías, frente a `r P("b12_c", ACUER, "sexo", "Hombre")` de los hombres.

@@ -1,0 +1,32 @@
+---
+title: "Apoyo a la *democracia*"
+pagetitle: "Democracia · EBD Magallanes 2025"
+subtitle: "Preferencia por la democracia frente a otras formas de gobierno en Magallanes"
+description: "Preferencia por la democracia frente a otras formas de gobierno."
+title-block-banner: img/fotos/democracia.jpg
+---
+
+```{r}
+source("R/setup_web.R")
+DEMO <- "La democracia es preferible a cualquier otra forma de gobierno"
+LOMISMO <- "A la gente como uno, nos da lo mismo un régimen democrático que uno no democrático"
+AUTOR <- "En algunas circunstancias, un gobierno autoritario puede ser preferible a uno democrático."
+```
+
+## Apoyo a la democracia
+
+### Preferencia por tipo de gobierno {#d1}
+
+```{r}
+bloque("d1",
+  texto = "¿Con cuál de las siguientes frases está usted más de acuerdo?",
+  orden_fijo = TRUE)
+```
+
+`r P("d1", DEMO)` de las personas considera que la democracia es preferible a cualquier otra forma de gobierno. Una de cada cuatro (`r P("d1", LOMISMO)`) se muestra indiferente ante el tipo de régimen y `r P("d1", AUTOR)` justificaría, en algunas circunstancias, un gobierno autoritario.
+
+El apoyo a la democracia no varía por sexo, edad ni territorio, pero sí —y de forma muy marcada— por nivel socioeconómico: alcanza `r P("d1", DEMO, "gse2", "ABC1")` en el grupo ABC1 y cae a `r P("d1", DEMO, "gse2", "D-E")` en el D-E. En este último grupo la indiferencia frente al régimen llega a `r P("d1", LOMISMO, "gse2", "D-E")`, casi tanto como el apoyo a la democracia.
+
+::: {.cita}
+En el grupo D-E, la indiferencia frente al tipo de régimen (`r P("d1", LOMISMO, "gse2", "D-E")`) casi iguala al apoyo a la democracia (`r P("d1", DEMO, "gse2", "D-E")`).
+:::

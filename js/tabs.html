@@ -1,0 +1,72 @@
+<script>
+// Pestañas de cada bloque de pregunta (Total / Sexo / Edad / GSE / Territorio).
+// Los paneles inactivos quedan ocultos con visibility (no display:none), así
+// echarts los dimensiona con el ancho real; al cambiar de pestaña se fuerza
+// un resize por si la ventana cambió de tamaño mientras estaban ocultos.
+document.addEventListener("click", function (ev) {
+  var btn = ev.target.closest(".q-tab");
+  if (!btn) return;
+  var bloque = btn.closest(".q-bloque");
+  bloque.querySelectorAll(".q-tab").forEach(function (b) {
+    var on = b === btn;
+    b.classList.toggle("activo", on);
+    b.setAttribute("aria-selected", on ? "true" : "false");
+  });
+  bloque.querySelectorAll(".q-panel").forEach(function (p) {
+    p.classList.toggle("activo", p.id === btn.dataset.panel);
+  });
+  ajustarAltos();
+  var panel = document.getElementById(btn.dataset.panel);
+  panel.querySelectorAll(".echarts4r, .html-widget").forEach(function (el) {
+    var inst = window.echarts && echarts.getInstanceByDom(el);
+    if (inst) inst.resize();
+  });
+});
+
+// echarts dibuja en canvas: si el gráfico se pinta antes de que cargue
+// Asap, queda con la fuente de respaldo. Se redibuja al cargar.
+function redibujarGraficos() {
+  if (!window.echarts) return;
+  document.querySelectorAll(".echarts4r").forEach(function (el) {
+    var inst = echarts.getInstanceByDom(el);
+    // Fusión mínima: vuelve a medir el texto con la fuente ya cargada sin
+    // descartar la configuración `media` (celular) del gráfico
+    if (inst) inst.setOption({ textStyle: { fontFamily: "'Asap', system-ui, sans-serif" } });
+  });
+}
+
+// Alto de cada gráfico según el ancho de su contenedor (ver ec() en R)
+function ajustarAltos() {
+  document.querySelectorAll(".ec-wrap").forEach(function (w) {
+    var el = w.querySelector(".echarts4r");
+    if (!el || !w.clientWidth) return;
+    var h = (w.clientWidth < 560 ? w.dataset.altoMovil : w.dataset.alto) + "px";
+    if (el.style.height !== h) {
+      el.style.height = h;
+      var inst = window.echarts && echarts.getInstanceByDom(el);
+      if (inst) inst.resize();
+    }
+  });
+}
+document.addEventListener("DOMContentLoaded", ajustarAltos);
+window.addEventListener("load", ajustarAltos);
+var _altosT;
+window.addEventListener("resize", function () { clearTimeout(_altosT); _altosT = setTimeout(ajustarAltos, 120); });
+
+// Tras "load" los widgets ya están creados; luego se espera a la fuente
+window.addEventListener("load", function () {
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('600 14px "Asap"').then(redibujarGraficos, redibujarGraficos);
+  }
+});
+
+// Navegación con flechas entre pestañas (accesibilidad)
+document.addEventListener("keydown", function (ev) {
+  if (!ev.target.classList || !ev.target.classList.contains("q-tab")) return;
+  if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+  var tabs = Array.from(ev.target.parentNode.querySelectorAll(".q-tab"));
+  var i = tabs.indexOf(ev.target) + (ev.key === "ArrowRight" ? 1 : -1);
+  var sig = tabs[(i + tabs.length) % tabs.length];
+  sig.focus(); sig.click();
+});
+</script>

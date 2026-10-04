@@ -1,0 +1,104 @@
+---
+title: "Datos *abiertos*"
+pagetitle: "Datos · EBD Magallanes 2025"
+subtitle: "Descargue la base de datos de la encuesta en R, Stata o SPSS, junto con su libro de códigos y el cuestionario"
+description: "Base de datos pública de la Encuesta de Bienestar y Desarrollo Magallanes 2025 en formatos R, Stata y SPSS, libro de códigos y cuestionario."
+title-block-banner: img/fotos/metodologia.jpg
+---
+
+```{r}
+source("R/setup_web.R")
+# Archivos generados por 4_scripts/05_bases_publicas.R y
+# 6_Reportes/Libro_Codigos/compilar.sh
+base_pub <- readRDS("descargas/EBD_Magallanes_2025.rds")
+
+peso <- function(f) {
+  b <- file.size(file.path("descargas", f))
+  if (b < 1024^2) paste(num(b / 1024, 0), "KB") else paste(num(b / 1024^2, 1), "MB")
+}
+descarga <- function(formato, archivo, titulo, detalle) {
+  tags$li(class = "descarga",
+    tags$span(class = "descarga-formato", formato),
+    tags$div(class = "descarga-cuerpo",
+      tags$a(class = "descarga-titulo", href = file.path("descargas", archivo), download = NA, titulo),
+      tags$span(class = "descarga-detalle", detalle)),
+    tags$a(class = "descarga-enlace", href = file.path("descargas", archivo), download = NA,
+           `aria-label` = paste("Descargar", titulo, "en formato", formato),
+           HTML(paste0("Descargar <span class=\"descarga-peso\">", peso(archivo), "</span>")))
+  )
+}
+```
+
+## Descargas
+
+La base pública reúne las `r num(nrow(base_pub), 0)` entrevistas de la encuesta y `r ncol(base_pub)` variables, con las mismas etiquetas en los tres formatos. Para usarla se necesitan el **libro de códigos**, que describe cada variable con sus códigos y su distribución, y el **cuestionario**, que contiene el texto exacto de las preguntas.
+
+```{r}
+tagList(
+  tags$h3(class = "descargas-grupo", "Base de datos"),
+  tags$ul(class = "descargas",
+    descarga("R", "EBD_Magallanes_2025.rds", "Base de datos para R",
+             "Archivo .rds. Las variables categóricas son factores (ordenados en las escalas) con sus etiquetas."),
+    descarga("Stata", "EBD_Magallanes_2025.dta", "Base de datos para Stata",
+             "Archivo .dta (Stata 15 o superior). Códigos numéricos del cuestionario con etiquetas de valor."),
+    descarga("SPSS", "EBD_Magallanes_2025.sav", "Base de datos para SPSS",
+             "Archivo .sav. Códigos del cuestionario con etiquetas; 77, 97, 98 y 99 declarados como perdidos.")
+  ),
+  tags$h3(class = "descargas-grupo", "Documentación"),
+  tags$ul(class = "descargas",
+    descarga("PDF", "EBD_Magallanes_2025_libro_codigos.pdf", "Libro de códigos",
+             "Nombre, pregunta, códigos, etiquetas y distribución ponderada de cada variable."),
+    descarga("PDF", "EBD_Magallanes_2025_cuestionario.pdf", "Cuestionario",
+             "Instrumento aplicado en terreno, con la numeración de preguntas que usa la base.")
+  )
+)
+```
+
+## Qué contiene la base
+
+Cada fila es una persona entrevistada y cada columna, una pregunta del cuestionario. Las variables siguen el orden del cuestionario (A.1, A.2…), precedidas por las de identificación y diseño muestral, e incluyen las variables construidas por la UER: tramos de edad, grupo socioeconómico agrupado y la codificación de las dos preguntas abiertas.
+
+En Stata y SPSS, las respuestas conservan los **códigos numéricos del cuestionario**. Los códigos especiales son 77 (no aplica), 97 (el encuestado es el principal sostenedor del hogar), 98 (no sabe o no responde) y 99 (no sabe o no responde en las preguntas abiertas). En SPSS ya están declarados como valores perdidos; en Stata y R hay que excluirlos de forma explícita cuando corresponda.
+
+## Uso del ponderador
+
+Toda estimación para la población regional debe usar el factor de expansión **`pond`**, que corrige la composición de la muestra por sexo, tramo de edad y conglomerado. Los porcentajes de este sitio se calculan así.
+
+::: {.panel-tabset}
+
+### R
+
+```r
+library(srvyr)
+ebd   <- readRDS("EBD_Magallanes_2025.rds")
+ebd_w <- as_survey_design(ebd, ids = 1, weights = pond)
+ebd_w |> group_by(a1) |> summarise(pct = survey_prop() * 100)
+```
+
+### Stata
+
+```stata
+use "EBD_Magallanes_2025.dta", clear
+svyset _n [pweight = pond]
+svy: tabulate a1, percent
+```
+
+### SPSS
+
+```spss
+GET FILE = "EBD_Magallanes_2025.sav".
+WEIGHT BY pond.
+FREQUENCIES VARIABLES = a1.
+```
+
+:::
+
+El diseño se declara solo con el ponderador, sin estratos ni conglomerados de selección. Es el mismo supuesto conservador que se usa en las pruebas de este sitio (ver [Metodología](metodologia.qmd)).
+
+## Confidencialidad
+
+Para proteger a las personas entrevistadas, la base pública no incluye la ubicación de la vivienda (distrito, zona y manzana censal, localidad), las respuestas literales de las preguntas abiertas ni el monto exacto del ingreso del hogar, que se entrega en tramos per cápita. La comuna se publica agrupada: Primavera, Río Verde y Cabo de Hornos tienen muy pocos casos y se reúnen en una sola categoría.
+
+## Cita sugerida
+
+*UER-UMAG (2026). Encuesta de Bienestar y Desarrollo Magallanes 2025. Base de datos pública y libro de códigos. Punta Arenas: Unidad de Estudios Regionales, Universidad de Magallanes.*

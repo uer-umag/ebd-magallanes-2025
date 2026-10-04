@@ -1,0 +1,75 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - perfil.qmd
+    - bienestar.qmd
+    - hidrogeno.qmd
+    - ciencia.qmd
+    - democracia.qmd
+    - metodologia.qmd
+    - datos.qmd
+  resources:
+    - img/
+    - descargas/
+
+lang: es
+
+website:
+  title: "EBD Magallanes 2025"
+  site-url: "https://uer-umag.github.io/ebd-magallanes-2025/"
+  repo-url: "https://github.com/uer-umag/ebd-magallanes-2025"
+  description: "Resultados de la Encuesta de Bienestar y Desarrollo Regional, Magallanes 2025. Unidad de Estudios Regionales, Universidad de Magallanes."
+  favicon: img/favicon.png
+  page-navigation: true
+  back-to-top-navigation: true
+  navbar:
+    logo: img/logo_uer_blanco.png
+    logo-alt: "Unidad de Estudios Regionales — UMAG"
+    title: "Encuesta Bienestar y Desarrollo 2025"
+    background: "#271743"
+    foreground: "#ffffff"
+    left:
+      - text: "Resultados clave"
+        href: index.qmd
+      - text: "Participantes"
+        href: perfil.qmd
+      - text: "Bienestar"
+        href: bienestar.qmd
+      - text: "Hidrógeno verde"
+        href: hidrogeno.qmd
+      - text: "Ciencia"
+        href: ciencia.qmd
+      - text: "Democracia"
+        href: democracia.qmd
+      - text: "Metodología"
+        href: metodologia.qmd
+      - text: "Datos"
+        href: datos.qmd
+  page-footer:
+    left: |
+      *Boletín de Estudios Regionales* / **UER-UMAG** · Encuesta Bienestar y Desarrollo Magallanes 2025
+    right: |
+      Unidad de Estudios Regionales · Universidad de Magallanes
+
+format:
+  html:
+    theme: [cosmo, estilos.scss]
+    toc: true
+    toc-location: left
+    toc-title: "En esta sección"
+    toc-depth: 3
+    smooth-scroll: true
+    anchor-sections: true
+    link-external-newwindow: true
+    include-after-body: js/tabs.html
+    grid:
+      sidebar-width: 250px
+      body-width: 880px
+      margin-width: 200px
+
+execute:
+  echo: false
+  warning: false
+  message: false

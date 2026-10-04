@@ -1,0 +1,503 @@
+/*-- scss:defaults --*/
+
+// Tipografía del Boletín de Estudios Regionales N°1 (UER-UMAG):
+// Asap para texto (la misma del impreso); Bitter como sustituto web de
+// Museo Slab (titulares slab negra itálica y bajadas slab liviana).
+@import url("https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600&family=Bitter:ital,wght@0,300;1,300;1,400;1,800;1,900&display=swap");
+
+$font-family-sans-serif: "Asap", system-ui, sans-serif;
+$font-size-root: 17.5px;
+$line-height-base: 1.62;
+
+$body-bg: #ffffff;
+$body-color: #2e2840;
+$primary: #6c4a9e;
+$link-color: #6c4a9e;
+$headings-color: #271743;
+$headings-font-weight: 700;
+$toc-color: #d12c88;
+$footer-bg: #271743;
+$footer-fg: #d9cfeb;
+
+/*-- scss:rules --*/
+
+:root {
+  --noche: #271743;
+  --violeta: #6c4a9e;
+  --violeta-claro: #75529d;
+  --magenta: #d12c88;
+  --turquesa: #0092a4;
+  --ambar: #e3a847;
+  --tinta: #2e2840;
+  --tinta-2: #4d4560;
+  --tinta-3: #6e6680;
+  --filete: #e4dfee;
+  --lavanda: #f5f2fa;
+  --slab: "Bitter", "Museo Slab", Georgia, serif;
+  color-scheme: light;
+}
+
+body { background: #ffffff; font-feature-settings: "kern", "liga"; }
+
+::selection { background: var(--magenta); color: #fff; }
+:focus-visible { outline: 2px solid var(--magenta); outline-offset: 3px; }
+a { text-underline-offset: .18em; text-decoration-thickness: 1px; }
+html { scrollbar-color: var(--violeta-claro) var(--lavanda); }
+
+/* Barra de navegación ---------------------------------------------------- */
+.navbar {
+  background: var(--noche) !important;
+  box-shadow: none;
+  border-bottom: 0;
+}
+.navbar-brand img { max-height: 30px; }
+.navbar-title { font-weight: 500; font-size: .95rem; color: #cbbfe0 !important; letter-spacing: .01em; }
+.navbar .nav-link { font-size: .92rem; font-weight: 600; color: #fff !important; opacity: .86; }
+.navbar .nav-link:hover { opacity: 1; }
+.navbar .nav-link.active { opacity: 1; box-shadow: inset 0 -3px 0 var(--magenta); }
+
+/* Apertura de sección (banner de título de Quarto) ------------------------
+   Composición del impreso: campo noche violeta a la izquierda con el
+   titular, fotografía a la derecha, trama de puntos blancos y bajada en
+   barras magenta. */
+.quarto-title-banner {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--noche) !important;
+  background-size: 62% auto !important;
+  background-position: right center !important;
+  background-repeat: no-repeat !important;
+  min-height: clamp(420px, 64vh, 640px);
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+.quarto-title-banner::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, var(--noche) 0%, var(--noche) 38%, rgba(39,23,67,.82) 50%, rgba(39,23,67,0) 72%);
+}
+.quarto-title-banner::after {
+  content: "";
+  position: absolute; z-index: -1;
+  right: 4%; top: 9%;
+  width: 150px; height: 190px;
+  background-image: radial-gradient(circle, rgba(255,255,255,.95) 2.6px, transparent 3px);
+  background-size: 30px 30px;
+  opacity: .9;
+}
+.quarto-title-banner .quarto-title {
+  padding: 3.2rem 0 3rem;
+  max-width: 44rem;
+}
+.quarto-title-banner h1.title {
+  font-family: var(--slab);
+  font-weight: 300;
+  font-style: normal;
+  color: #fff;
+  font-size: clamp(2.3rem, 4.6vw, 4.1rem);
+  line-height: 1.02;
+  letter-spacing: -.01em;
+  margin: 0 0 1.1rem;
+  text-wrap: balance;
+}
+.quarto-title-banner h1.title em {
+  display: block;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: -.015em;
+}
+.quarto-title-banner .subtitle {
+  display: inline;
+  font-family: var(--slab);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.08rem, 1.7vw, 1.42rem);
+  line-height: 1.62;
+  color: #fff;
+  padding: .06em .32em .1em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  background-image: linear-gradient(var(--magenta), var(--magenta));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  animation: barrido .95s cubic-bezier(.16, 1, .3, 1) .2s both;
+}
+@keyframes barrido { from { background-size: 0% 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  .quarto-title-banner .subtitle, .portada-titulo .fuerte { animation: none; }
+}
+.quarto-title-meta, .quarto-title-banner .description { display: none; }
+
+/* Crédito fotográfico de cada apertura (borde derecho, vertical) */
+.quarto-title-banner .quarto-title::after {
+  content: "Fotografía: Boletín de Estudios Regionales, UER-UMAG";
+  position: absolute; right: .55rem; bottom: 1rem;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-family: "Asap", sans-serif; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: #fff;
+  background: rgba(39,23,67,.72);
+  padding: .55rem .2rem;
+}
+
+/* Cita destacada: itálica magenta del impreso */
+.cita {
+  margin: 2.4rem 0 2.6rem;
+  padding: 0 0 0 1.4rem;
+  max-width: 40rem;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2vw, 1.42rem);
+  line-height: 1.42;
+  color: var(--magenta);
+  position: relative;
+}
+.cita::before {
+  content: "";
+  position: absolute; left: 0; top: .35em; bottom: .35em;
+  width: 1px; background: var(--magenta);
+}
+.cita p { margin: 0; text-align: left !important; }
+
+/* Cabecera corrida del impreso, bajo cada apertura */
+#title-block-header::after {
+  content: "BOLETÍN DE ESTUDIOS REGIONALES / UER-UMAG";
+  grid-column: body-content-start / body-content-end;
+  display: block;
+  margin: 1.1rem 0 .4rem;
+  padding-bottom: .45rem;
+  border-bottom: 1px solid var(--violeta-claro);
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: .02em;
+  color: var(--violeta-claro);
+}
+body:has(.portada) #title-block-header { display: none; }
+
+/* Encabezados ------------------------------------------------------------- */
+main h2 {
+  font-size: 1.62rem;
+  font-weight: 800;
+  color: var(--turquesa);
+  margin-top: 3.6rem;
+  margin-bottom: .2rem;
+  border: 0;
+  letter-spacing: -.005em;
+  text-wrap: balance;
+}
+main h3 {
+  font-size: 1.26rem;
+  font-weight: 700;
+  color: var(--noche);
+  margin-top: 2.9rem;
+  margin-bottom: .55rem;
+  text-wrap: balance;
+}
+main h2 + h3 { margin-top: 1.3rem; }
+main p { max-width: 70ch; }
+@media (min-width: 768px) {
+  main section > p, .presentacion-texto p { text-align: justify; hyphens: auto; }
+}
+
+/* Índice lateral --------------------------------------------------------- */
+#toc-title {
+  font-style: italic; font-weight: 400; text-transform: none; letter-spacing: 0;
+  font-size: .82rem; color: var(--violeta-claro);
+}
+.sidebar nav[role="doc-toc"] { font-size: .9rem; }
+.sidebar nav[role="doc-toc"] > ul > li > a { font-weight: 700; color: var(--noche); }
+.sidebar nav[role="doc-toc"] ul ul > li > a { color: var(--tinta-2); }
+.sidebar nav[role="doc-toc"] ul > li > a.active {
+  color: var(--magenta) !important;
+  border-left-color: var(--magenta) !important;
+}
+
+/* Figura de pregunta: como las figuras del impreso, sin tarjeta -------------- */
+.q-bloque {
+  position: relative;
+  border-top: 2px solid var(--noche);
+  padding: .85rem 0 0;
+  margin: .4rem 0 1.3rem;
+}
+.q-texto {
+  color: var(--violeta-claro);
+  font-size: .95rem;
+  font-style: italic;
+  line-height: 1.45;
+  margin: 0 0 .9rem;
+}
+.q-texto b { font-style: normal; color: var(--noche); }
+.q-tabs {
+  display: flex; flex-wrap: wrap; gap: .2rem 1.5rem;
+  margin: 0 0 1.1rem;
+  border-bottom: 1px solid var(--filete);
+}
+.q-tab {
+  appearance: none; background: none; border: 0;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  padding: .4rem 0 .45rem;
+  font: inherit; font-size: .76rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--tinta-3); cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.q-tab:hover { color: var(--noche); border-bottom-color: var(--filete); }
+.q-tab.activo { color: var(--noche); border-bottom-color: var(--magenta); }
+
+.q-paneles { position: relative; }
+/* Los paneles ocultos conservan su ancho para que echarts dimensione bien */
+.q-panel { position: absolute; top: 0; left: 0; right: 0; visibility: hidden; pointer-events: none; }
+.q-panel.activo { position: relative; visibility: visible; pointer-events: auto; }
+
+.q-nota { font-size: .86rem; color: var(--tinta-2); margin: 0 0 .5rem; }
+.q-pie {
+  display: flex; flex-wrap: wrap; gap: .3rem 1.4rem;
+  font-size: 13.5px; color: var(--tinta-3);
+  margin-top: .5rem; padding-top: .5rem;
+  border-top: 1px solid var(--filete);
+}
+.q-pie b { color: var(--tinta); }
+.q-sig::before {
+  content: ""; display: inline-block; width: .55rem; height: .55rem;
+  border-radius: 50%; margin-right: .4rem; vertical-align: .04rem;
+}
+.q-sig.si::before { background: var(--magenta); }
+.q-sig.no::before { background: #cfc9da; }
+.q-fuente {
+  font-size: 13px; color: var(--tinta-3); font-style: italic;
+  margin: .35rem 0 0;
+}
+
+/* Portada: tapa del boletín ---------------------------------------------------- */
+.portada {
+  position: relative;
+  isolation: isolate;
+  min-height: min(92vh, 860px);
+  margin-top: 0;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  background-color: var(--noche);
+  background-position: center 38%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+  overflow: hidden;
+}
+.portada::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(39,23,67,.05) 30%, rgba(39,23,67,.62) 66%, rgba(39,23,67,.92) 100%);
+}
+.portada-franja {
+  grid-column: 1;
+  background: var(--turquesa);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 2.2rem 0;
+  font-size: .82rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: #fff;
+}
+.portada-trama {
+  position: absolute; right: 6%; top: 10%; width: 180px; height: 150px; z-index: -1;
+  background-image: radial-gradient(circle, rgba(255,255,255,.95) 2.6px, transparent 3px);
+  background-size: 30px 30px;
+}
+.portada-trama::after {
+  content: ""; position: absolute; width: 150px; height: 150px; border-radius: 50%;
+  background: var(--ambar); right: -150px; top: -95px;
+}
+.portada-cuerpo {
+  grid-column: 2;
+  align-self: end;
+  padding: 0 clamp(1.4rem, 6vw, 6rem) 3rem clamp(1.4rem, 7vw, 7rem);
+  max-width: 68rem;
+}
+.portada-titulo {
+  color: #fff;
+  font-family: "Asap", sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 6.6vw, 5.6rem);
+  line-height: .98;
+  letter-spacing: -.01em;
+  margin: 0 0 1.6rem;
+}
+.portada-titulo span { display: block; }
+.portada-titulo .ligero { font-weight: 300; }
+.portada-titulo .fuerte { font-weight: 800; }
+
+.portada-temas {
+  font-size: clamp(.88rem, 1.3vw, 1.02rem);
+  font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  line-height: 1.7;
+  max-width: 40rem;
+  margin-bottom: 2.2rem;
+}
+.portada-temas a { color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.35); }
+.portada-temas a:hover { border-bottom-color: var(--magenta); color: #fff; }
+.portada-temas .sep { color: var(--ambar); font-weight: 400; }
+.portada-pie { display: flex; align-items: center; gap: 1.6rem; flex-wrap: wrap; }
+.portada-pie img { height: 46px; width: auto; }
+.portada-pie p { margin: 0; font-size: .9rem; color: #e4daf3; max-width: 30rem; }
+.credito {
+  position: absolute; right: .6rem; bottom: 1rem;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(255,255,255,.78); margin: 0;
+}
+
+/* Presentación: rótulo vertical magenta como en el impreso ---------------------- */
+.presentacion {
+  display: grid;
+  grid-template-columns: 4.2rem 1fr;
+  gap: 1.6rem;
+  margin: 4rem 0 3.6rem;
+}
+.presentacion-rotulo {
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-family: var(--slab); font-weight: 300; font-style: italic;
+  font-size: 3.1rem; line-height: 1; color: var(--magenta);
+  margin: 0; justify-self: center; align-self: start;
+}
+.presentacion-texto p { max-width: 62ch; }
+.presentacion-texto p:first-child { font-size: 1.14rem; color: var(--noche); }
+
+/* Índice de resultados clave: página de índice del impreso ----------------------- */
+.indice {
+  background: var(--noche);
+  color: #fff;
+  padding: 4.2rem 0 4.6rem;
+}
+.indice-marco {
+  max-width: 76rem; margin: 0 auto;
+  padding: 0 clamp(1.2rem, 5vw, 4rem);
+  display: grid; grid-template-columns: minmax(10rem, 18rem) 1fr; gap: 3rem;
+}
+.indice-rotulo {
+  font-family: "Asap", sans-serif; font-weight: 300; text-transform: uppercase;
+  font-size: clamp(4.2rem, 9vw, 7.4rem); line-height: .86; letter-spacing: -.02em;
+  color: #fff; margin: 0; position: sticky; top: 5rem; align-self: start;
+}
+.indice-rotulo span:not(.visually-hidden) { display: block; }
+.indice-grupo + .indice-grupo { margin-top: 2.6rem; }
+.indice-grupo h3 {
+  font-size: .82rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  margin: 0 0 .2rem; padding-bottom: .5rem;
+  border-bottom: 1px solid rgba(255,255,255,.55);
+}
+.indice-grupo h3 a { color: #7fd3de; text-decoration: none; }
+.indice-grupo h3 a:hover { color: #fff; }
+.indice-grupo ol { list-style: none; margin: 0; padding: 0; }
+.indice-grupo li { border-bottom: 1px solid rgba(255,255,255,.18); }
+.indice-fila {
+  display: grid; grid-template-columns: 8.4rem 1fr; gap: 1.2rem; align-items: baseline;
+  padding: .95rem 0 1rem;
+  color: #fff; text-decoration: none;
+  transition: background-color .2s;
+}
+.indice-fila:hover { color: #fff; background: rgba(209,44,136,.14); }
+.indice-cifra {
+  font-family: var(--slab); font-weight: 800; font-style: italic;
+  font-size: 2.15rem; line-height: 1; color: #ff7cc0;
+  font-variant-numeric: tabular-nums;
+}
+.indice-texto { font-size: 1.04rem; line-height: 1.45; color: #ece5f6; }
+.indice-texto b { color: #fff; }
+
+/* Metodología ----------------------------------------------------------------- */
+.ficha {
+  display: grid; grid-template-columns: max-content 1fr; gap: 0;
+  margin: 1rem 0 2rem; font-size: .96rem;
+  border-top: 2px solid var(--noche);
+}
+.ficha dt, .ficha dd { padding: .6rem 0; border-bottom: 1px solid var(--filete); margin: 0; }
+.ficha dt { font-weight: 700; color: var(--violeta); padding-right: 1.6rem; }
+
+/* Datos: lista de descargas (filetes, sin tarjetas) -------------------------- */
+.descargas-grupo {
+  margin: 2.2rem 0 .55rem; font-size: .76rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-3);
+}
+.descargas { list-style: none; margin: 0 0 1.4rem; padding: 0; border-top: 2px solid var(--noche); }
+.descarga {
+  display: grid; grid-template-columns: 5.6rem 1fr auto; gap: 0 1.4rem;
+  align-items: center; padding: .95rem 0; border-bottom: 1px solid var(--filete);
+}
+.descarga-formato {
+  font-family: var(--slab); font-style: italic; font-weight: 800;
+  font-size: 1.45rem; line-height: 1; color: var(--noche);
+}
+.descarga-titulo { display: block; font-weight: 700; color: var(--noche); text-decoration: none; }
+.descarga-titulo:hover { color: var(--violeta); }
+.descarga-detalle { display: block; font-size: .9rem; line-height: 1.45; color: var(--tinta-2); margin-top: .1rem; }
+.descarga-enlace {
+  font-size: .76rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--noche); text-decoration: none; white-space: nowrap;
+  padding: .3rem 0 .35rem; border-bottom: 3px solid var(--magenta);
+}
+.descarga-enlace:hover { color: var(--magenta); }
+.descarga-peso { font-weight: 500; letter-spacing: .04em; text-transform: none; color: var(--tinta-3); margin-left: .35em; }
+
+/* Pestañas de código: subrayadas, como las de las figuras */
+.panel-tabset .nav-tabs { border-bottom: 1px solid var(--filete); gap: 1.5rem; }
+.panel-tabset .nav-tabs .nav-link {
+  border: 0; border-bottom: 3px solid transparent; border-radius: 0; background: none;
+  padding: .4rem 0 .45rem; font-size: .76rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--tinta-3);
+}
+.panel-tabset .nav-tabs .nav-link:hover { color: var(--noche); border-bottom-color: var(--filete); }
+.panel-tabset .nav-tabs .nav-link.active { color: var(--noche); border-bottom-color: var(--magenta); }
+.panel-tabset .tab-content { border: 0; padding: .8rem 0 0; }
+
+/* Pie de página ------------------------------------------------------------------ */
+.nav-footer { font-size: .84rem; }
+.nav-footer, .nav-footer a { color: #d9cfeb !important; }
+
+/* La portada arranca pegada a la barra de navegación */
+body:has(.portada) #quarto-document-content { padding-top: 0 !important; margin-top: 0; }
+body:has(.portada) #quarto-content { margin-top: 0; padding-top: 0; }
+
+/* Título corto en la barra bajo el punto de quiebre lg */
+@media (max-width: 991.98px) {
+  .navbar-title { font-size: 0 !important; }
+  .navbar-title::after { content: "EBD Magallanes 2025"; font-size: .95rem; }
+}
+@media (max-width: 419.98px) {
+  .navbar-title { display: none !important; }
+}
+.ec-wrap { width: 100%; }
+
+/* Responsivo --------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+  .quarto-title-banner {
+    background-size: cover !important;
+    background-position: center !important;
+    min-height: 420px;
+  }
+  .quarto-title-banner::before {
+    background: linear-gradient(180deg, rgba(39,23,67,.15) 0%, rgba(39,23,67,.7) 48%, var(--noche) 88%);
+  }
+  .quarto-title-banner::after { width: 90px; height: 120px; top: 1.2rem; right: 2.6rem; }
+  .quarto-title-banner .quarto-title { padding: 6rem 0 2.2rem; }
+}
+@media (max-width: 767.98px) {
+  .portada { grid-template-columns: 34px 1fr; min-height: min(88vh, 720px); }
+  .portada-franja { font-size: .66rem; padding: 1.2rem 0; }
+  .portada-trama { width: 120px; height: 90px; right: 1rem; top: 1.4rem; }
+  .portada-trama::after { width: 90px; height: 90px; right: -70px; top: -70px; }
+  .presentacion { grid-template-columns: 2.6rem 1fr; gap: .9rem; }
+  .presentacion-rotulo { font-size: 2.2rem; }
+  .indice-marco { grid-template-columns: 1fr; gap: 1.6rem; }
+  .indice-rotulo { position: static; font-size: 4rem; }
+  .indice-rotulo { font-size: 3.4rem; }
+  .indice-fila { grid-template-columns: 1fr; gap: .25rem; }
+  .indice-cifra { font-size: 1.9rem; }
+  .ficha { grid-template-columns: 1fr; }
+  .ficha dt { border-bottom: 0; padding-bottom: 0; }
+}
+@media (max-width: 559.98px) {
+  .descarga { grid-template-columns: 1fr; gap: .35rem; }
+  .descarga-enlace { justify-self: start; margin-top: .25rem; }
+}

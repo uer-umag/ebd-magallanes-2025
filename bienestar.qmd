@@ -1,0 +1,169 @@
+---
+title: "Bienestar y *percepción regional*"
+pagetitle: "Bienestar y percepción regional · EBD Magallanes 2025"
+subtitle: "Cómo evalúan su vida las personas de Magallanes, qué problemas consideran más urgentes y qué esperan del futuro de la región"
+description: "Satisfacción con la vida, confianza, problemas urgentes y expectativas sobre el futuro de Magallanes."
+title-block-banner: img/fotos/bienestar.jpg
+---
+
+```{r}
+source("R/setup_web.R")
+SAT <- c("Satisfecho", "Totalmente satisfecho")
+MAS <- "Habrá más oportunidades"
+APORTA <- c("Aporta mucho", "Aporta bastante")
+```
+
+## Satisfacción con la vida
+
+### Satisfacción con la vida en general {#a1}
+
+```{r}
+bloque("a1",
+  texto = "Considerando todas las cosas, ¿qué tan satisfecho(a) o insatisfecho(a) se encuentra actualmente con su vida?",
+  tipo = "escala", n_neg = 2, neutral = "Indiferente")
+```
+
+Casi nueve de cada diez personas (`r P("a1", SAT)`) se declaran satisfechas o totalmente satisfechas con su vida, y la mitad elige el extremo superior de la escala. Es una de las respuestas más homogéneas de la encuesta: no hay diferencias significativas por sexo, edad, grupo socioeconómico ni territorio.
+
+### Satisfacción con ámbitos de la vida {#a2}
+
+```{r}
+bloque_bateria("a2",
+  items = c(
+    a2_a = "Su trabajo u ocupación actual",
+    a2_b = "Sus ingresos mensuales",
+    a2_c = "El tiempo para hacer lo que le gusta",
+    a2_d = "Su salud",
+    a2_e = "Su vivienda",
+    a2_f = "La seguridad de su comuna o localidad",
+    a2_g = "La situación medioambiental de su barrio",
+    a2_h = "Sus relaciones familiares",
+    a2_i = "Sus relaciones con amistades y conocidos"
+  ),
+  n_neg = 2, neutral = "Indiferente", favorables = SAT,
+  etiqueta_fav = "Satisfecho o totalmente satisfecho",
+  texto = "¿Qué tan satisfecho o insatisfecho está usted con los siguientes aspectos? Escala de 1 a 5. Se excluye «No aplica» de la base.")
+```
+
+La satisfacción es mayor en la esfera íntima —relaciones familiares (`r P("a2_h", SAT)`), amistades y vivienda— y menor en los ámbitos materiales y del entorno: ingresos (`r P("a2_b", SAT)`), tiempo libre y seguridad. Los ingresos marcan una brecha de género y de nivel socioeconómico; la salud, una brecha de edad (`r P("a2_d", SAT, "edad2", "18-29")` entre quienes tienen 18 a 29 años frente a `r P("a2_d", SAT, "edad2", "60+")` entre las personas de 60 años o más). Fuera de Punta Arenas la satisfacción con la seguridad local es mayor (`r P("a2_f", SAT, "conglomerado", "Resto de la región")` frente a `r P("a2_f", SAT, "conglomerado", "Pta. Arenas")`).
+
+## Confianza y problemas de la región
+
+### Confianza interpersonal {#a3}
+
+```{r}
+bloque("a3",
+  texto = "Usted diría que en general…",
+  orden_fijo = TRUE)
+```
+
+La región está dividida en partes iguales entre quienes creen que se puede confiar en las personas (`r P("a3", "Se puede confiar en las personas")`) y quienes no. La confianza crece con el nivel socioeconómico: alcanza `r P("a3", "Se puede confiar en las personas", "gse2", "ABC1")` en el grupo ABC1 y baja a `r P("a3", "Se puede confiar en las personas", "gse2", "D-E")` en el D-E.
+
+### El problema más urgente de la región {#a4}
+
+```{r}
+bloque("a4_macro",
+  texto = "De acuerdo con lo que usted sabe o lo que ha visto en la región de Magallanes, ¿cuál es el problema más urgente o importante que las autoridades deberían dedicar mayor esfuerzo en solucionar? Pregunta abierta, codificada en macrocategorías.")
+```
+
+Las prioridades se reparten entre tres grandes áreas de peso similar: servicios sociales (salud, educación, vivienda social), seguridad ciudadana y habitabilidad e infraestructura. Las preocupaciones económicas pesan más entre hombres, en el grupo ABC1 y fuera de Punta Arenas.
+
+### Problemas urgentes, por tema {#a4-tema}
+
+```{r}
+bloque("a4_tema",
+  texto = "Misma pregunta abierta, codificada por tema específico.",
+  top = 8)
+```
+
+Salud (`r P("a4_tema", "Salud")`) y seguridad (`r P("a4_tema", "Seguridad")`) concentran cuatro de cada diez menciones. En el resto de la región la conectividad aparece con fuerza (`r P("a4_tema", "Conectividad", "conglomerado", "Resto de la región")`), mientras que en Punta Arenas la seguridad es la primera preocupación.
+
+## Presente y futuro de Magallanes
+
+### ¿Hacia dónde va la región? {#a5}
+
+```{r}
+bloque("a5",
+  texto = "¿Usted cree que en el momento actual la región de Magallanes está…?",
+  tipo = "escala", n_neg = 1, neutral = "Estancada")
+```
+
+La percepción dominante es de estancamiento (`r P("a5", "Estancada")`), por sobre quienes ven una región que progresa (`r P("a5", "Progresando")`). Solo una minoría habla de decadencia. Esta lectura es transversal a los grupos.
+
+::: {.cita}
+La percepción dominante es de estancamiento: `r P("a5", "Estancada")` cree que la región está estancada, por sobre quienes ven una región que progresa.
+:::
+
+### Velocidad del cambio {#a10}
+
+```{r}
+bloque("a10",
+  texto = "En general, considerando los aspectos económicos, sociales, culturales y ambientales, ¿a qué velocidad siente usted que está cambiando la región de Magallanes? Escala de 1 («muy lento») a 10 («muy rápido»).",
+  tipo = "numerica")
+```
+
+La respuesta más frecuente es el punto medio de la escala (5). Las generaciones jóvenes perciben un cambio más rápido que las mayores: entre las personas de 60 años o más, una de cada seis marca el valor mínimo.
+
+### Oportunidades de trabajo en diez años {#a6}
+
+```{r}
+bloque_bateria("a6",
+  items = c(
+    a6_a = "Ganadería y agricultura",
+    a6_b = "Turismo",
+    a6_c = "Sector público",
+    a6_d = "Pesca artesanal e industrial",
+    a6_e = "Petróleo, hidrocarburos y derivados",
+    a6_f = "Hidrógeno verde y derivados",
+    a6_g = "Comercio",
+    a6_h = "Salmonicultura",
+    a6_i = "Sector portuario"
+  ),
+  n_neg = 1, neutral = "Va a ser igual", favorables = MAS,
+  etiqueta_fav = "Habrá más oportunidades",
+  texto = "Imagine el futuro de la región de Magallanes de aquí a 10 años más. ¿Usted cree que habrá más o menos oportunidades para trabajar en las siguientes áreas?")
+```
+
+El turismo (`r P("a6_b", MAS)`) y el hidrógeno verde (`r P("a6_f", MAS)`) son las dos áreas donde una clara mayoría espera más empleo. En las actividades tradicionales —ganadería, pesca, hidrocarburos— y en el sector público las expectativas están divididas. Fuera de Punta Arenas el optimismo es mayor respecto de la salmonicultura, el comercio y el sector portuario.
+
+## Instituciones y toma de decisiones
+
+### Aporte de las instituciones al desarrollo regional {#a8}
+
+```{r}
+bloque_bateria("a8",
+  items = c(
+    a8_a = "Gobierno Regional",
+    a8_b = "Organizaciones sociales (JJVV, sindicatos, ONG)",
+    a8_c = "Universidad de Magallanes",
+    a8_d = "Otras instituciones de educación superior",
+    a8_e = "Medios de comunicación regionales",
+    a8_f = "Empresas de la región",
+    a8_g = "Gobierno Central"
+  ),
+  n_neg = 2, favorables = APORTA,
+  etiqueta_fav = "Aporta mucho o bastante",
+  texto = "Indíqueme si en su opinión las siguientes instituciones aportan mucho, bastante, poco o nada al desarrollo de esta región.")
+```
+
+La Universidad de Magallanes es la institución mejor evaluada (`r P("a8_c", APORTA)` cree que aporta mucho o bastante), seguida de las empresas regionales y otras casas de estudio. En el otro extremo está el Gobierno Central: apenas `r P("a8_g", APORTA)` reconoce su aporte, por debajo del Gobierno Regional (`r P("a8_a", APORTA)`).
+
+### Centralismo o autonomía {#a7}
+
+```{r}
+bloque("a7",
+  texto = "Pensando en la situación actual de la Región de Magallanes, ¿usted cree que en el último tiempo…?",
+  orden_fijo = TRUE)
+```
+
+Seis de cada diez personas (`r P("a7", "Ha aumentado el centralismo y la dependencia de Capital")`) perciben que ha aumentado el centralismo y la dependencia de Santiago, una opinión algo más extendida entre los hombres.
+
+### ¿Quién debe decidir sobre el desarrollo regional? {#a9}
+
+```{r}
+bloque("a9",
+  texto = "Al momento de tomar decisiones sobre las políticas para el desarrollo de la Región de Magallanes, ¿cuál de estas dos formas prefiere usted o considera más fundamental?",
+  orden_fijo = TRUE)
+```
+
+Una mayoría ajustada (`r P("a9", "Que todas las personas participen sin importar su condición")`) privilegia la participación de todas las personas por sobre las decisiones de expertos. La preferencia se invierte según nivel socioeconómico: en el grupo ABC1 predominan los expertos y en el D-E, la participación.

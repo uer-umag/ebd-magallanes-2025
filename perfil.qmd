@@ -1,0 +1,90 @@
+---
+title: "Quiénes *respondieron*"
+pagetitle: "Participantes · EBD Magallanes 2025"
+subtitle: "655 personas de 18 años o más, residentes en la Región de Magallanes y de la Antártica Chilena desde hace al menos un año"
+description: "Perfil sociodemográfico de las personas encuestadas."
+title-block-banner: img/fotos/participantes.jpg
+---
+
+```{r}
+source("R/setup_web.R")
+sin_cruces <- character(0)
+```
+
+Los porcentajes de esta sección están **ponderados** por sexo, edad y conglomerado, de modo que la muestra reproduce la estructura de la población regional. Al pasar el cursor sobre cada barra se muestra el número de entrevistas sin ponderar (*n*).
+
+## Perfil demográfico
+
+### Sexo {#sexo}
+
+```{r}
+bloque("sexo", cruzar = sin_cruces, orden_fijo = TRUE)
+```
+
+### Edad {#edad}
+
+```{r}
+bloque("edad2", cruzar = sin_cruces, orden_fijo = TRUE)
+```
+
+### Nacionalidad {#nacionalidad}
+
+```{r}
+bloque("e2", cruzar = sin_cruces, orden_fijo = TRUE)
+```
+
+## Territorio
+
+### Conglomerado {#conglomerado}
+
+```{r}
+bloque("conglomerado", cruzar = sin_cruces, orden_fijo = TRUE)
+```
+
+En el análisis, *Territorio* compara Punta Arenas con el resto de la región (Natales, Porvenir, Primavera, Cabo de Hornos y Río Verde). El resto de la región se sobrerrepresentó en la muestra para poder analizarlo por separado; la ponderación devuelve a cada conglomerado su peso real.
+
+### Comuna de residencia {#comuna}
+
+```{r}
+bloque("comuna_cod", cruzar = sin_cruces)
+```
+
+### Zona {#zona}
+
+```{r}
+bloque("zona", cruzar = sin_cruces, orden_fijo = TRUE)
+```
+
+## Nivel socioeconómico, educación y trabajo
+
+### Grupo socioeconómico {#gse}
+
+```{r}
+bloque("gse2", cruzar = sin_cruces, orden_fijo = TRUE)
+```
+
+El grupo socioeconómico (GSE) se calcula con la metodología AIM 2023 a partir de la educación y ocupación del jefe o jefa de hogar y del ingreso del hogar. Se agrupa en tres tramos: ABC1 (alto), C2-C3 (medio) y D-E (bajo).
+
+### Nivel educacional {#educacion}
+
+```{r}
+bloque("e5",
+  texto = "¿Cuál es el nivel educacional más alto que usted alcanzó?",
+  cruzar = sin_cruces, orden_fijo = TRUE)
+```
+
+### Situación laboral {#trabajo}
+
+```{r}
+bloque("e6",
+  texto = "La semana pasada, es decir, entre lunes y domingo, ¿en qué situación se encontraba usted?",
+  cruzar = sin_cruces)
+```
+
+## Modalidad de aplicación {#modalidad}
+
+```{r}
+bloque("modalidad", cruzar = sin_cruces, orden_fijo = TRUE)
+```
+
+La encuesta combinó entrevistas presenciales en el hogar (en tablet) y telefónicas, en proporciones similares.

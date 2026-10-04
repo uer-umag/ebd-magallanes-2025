@@ -1,0 +1,69 @@
+---
+title: "Cómo se hizo *la encuesta*"
+pagetitle: "Metodología · EBD Magallanes 2025"
+subtitle: "Ficha técnica del estudio y criterios para calcular y leer los resultados de este sitio"
+description: "Ficha técnica, diseño muestral y criterios de análisis de la Encuesta de Bienestar y Desarrollo Magallanes 2025."
+title-block-banner: img/fotos/metodologia.jpg
+---
+
+```{r}
+source("R/setup_web.R")
+deff <- N_TOTAL * sum(ebd$pond^2) / sum(ebd$pond)^2
+moe  <- 100 * 1.96 * sqrt(0.25 / N_TOTAL)
+moe_deff <- moe * sqrt(deff)
+n_pres <- sum(ebd$modalidad == "Presencial")
+n_tel  <- sum(ebd$modalidad == "Telefónica")
+```
+
+## Ficha técnica
+
+```{r}
+tags$dl(class = "ficha",
+  tags$dt("Estudio"), tags$dd("Encuesta Desafíos para el Desarrollo y el Bienestar en Magallanes 2025 (EBD Magallanes 2025)"),
+  tags$dt("Mandante"), tags$dd("Unidad de Estudios Regionales (UER), Universidad de Magallanes"),
+  tags$dt("Ejecución del terreno"), tags$dd("Consultora EKHOS"),
+  tags$dt("Universo"), tags$dd("Personas de 18 años o más que residen en la Región de Magallanes y de la Antártica Chilena desde hace al menos un año (128.911 personas, Censo 2017)"),
+  tags$dt("Muestra"), tags$dd(paste0(num(N_TOTAL, 0), " entrevistas: ", n_pres, " presenciales (CAPI, en tablet) y ", n_tel, " telefónicas (CATI)")),
+  tags$dt("Trabajo de campo"), tags$dd("4 al 26 de noviembre de 2025"),
+  tags$dt("Cobertura"), tags$dd("Punta Arenas, Natales, Porvenir, Primavera, Cabo de Hornos y Río Verde; zonas urbanas y rurales"),
+  tags$dt("Diseño muestral"), tags$dd("Dos conglomerados (Punta Arenas y resto de la región). En la modalidad presencial urbana, selección aleatoria de manzanas censales estratificada por GSE predominante; en zonas rurales, diseño mayormente intencionado"),
+  tags$dt("Ponderación"), tags$dd("Factor de expansión trivariado por sexo, tramo de edad y conglomerado"),
+  tags$dt("Error muestral"), tags$dd(HTML(paste0(
+    "±", num(moe, 1), " puntos porcentuales para el total, con 95% de confianza y varianza máxima, ",
+    "bajo supuesto de muestreo aleatorio simple. Considerando el efecto de la ponderación ",
+    "(efecto de diseño de Kish = ", num(deff, 2), "), el error asciende a ±", num(moe_deff, 1), " puntos.")))
+)
+```
+
+## Cómo leer los gráficos
+
+**Porcentajes ponderados.** Todos los porcentajes se calculan con el factor de expansión, por lo que representan a la población adulta de la región y no solo a las personas entrevistadas. Al pasar el cursor sobre una barra se muestra también el número de entrevistas sin ponderar (*n*).
+
+**Pestañas.** Cada pregunta se presenta para el **Total** y desagregada por cuatro variables de cruce: **sexo**, **edad** (18-29, 30-44, 45-59 y 60 años o más), **grupo socioeconómico** (ABC1, C2-C3 y D-E) y **territorio** (Punta Arenas frente al resto de la región).
+
+**Escalas.** En las preguntas con respuestas graduadas, los colores van del ámbar (polo negativo) al turquesa (polo positivo), con gris para la posición intermedia; los tonos más oscuros marcan las respuestas extremas. En las barras apiladas, la respuesta «No sabe / No responde» (NS/NR) no se dibuja, pero sí forma parte del denominador; por eso algunas barras no llegan al 100%.
+
+**Baterías de preguntas.** Cuando varias preguntas comparten la misma escala, la pestaña Total muestra la distribución completa de cada ítem, ordenados de mayor a menor acuerdo. Las pestañas de cruce resumen cada ítem en el porcentaje de respuestas favorables (por ejemplo, «satisfecho o totalmente satisfecho»).
+
+**«No aplica».** En la satisfacción con ámbitos de la vida, quienes respondieron «No aplica» (por ejemplo, sin trabajo u ocupación) quedan fuera de la base de cálculo.
+
+## Diferencias entre grupos
+
+Al pie de cada pestaña de cruce se indica si la diferencia entre grupos es **estadísticamente significativa**. Se usa la prueba de independencia χ² con la corrección de Rao-Scott para datos ponderados, excluyendo NS/NR, y un nivel de significación de 5%.
+
+- <span class="q-sig si"></span> **Diferencia significativa**: es poco probable que la diferencia observada se deba solo al azar del muestreo.
+- <span class="q-sig no"></span> **Sin diferencia significativa**: las diferencias entre grupos están dentro del margen esperable por azar y no deben interpretarse como diferencias reales.
+
+El diseño de análisis es conservador: los errores estándar se calculan sin estratos, asumiendo que la selección dentro de los conglomerados no es estrictamente aleatoria.
+
+## Preguntas abiertas
+
+Dos preguntas fueron abiertas (de respuesta espontánea): el problema más urgente de la región y la primera idea asociada al hidrógeno verde. Las respuestas literales fueron codificadas por el equipo de la UER en temas y macrocategorías.
+
+## Créditos
+
+Unidad de Estudios Regionales, Universidad de Magallanes. Procesamiento y visualización en R (paquetes `survey` y `echarts4r`) y Quarto.
+
+La base de datos, su libro de códigos y el cuestionario se pueden descargar en [Datos](datos.qmd).
+
+Cita sugerida: *UER-UMAG (2026). Encuesta de Bienestar y Desarrollo Magallanes 2025. Punta Arenas: Universidad de Magallanes.*

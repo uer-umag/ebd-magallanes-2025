@@ -1,0 +1,8 @@
+/.quarto/
+/_site/
+/.impeccable/
+.DS_Store
+.Rhistory
+.RData
+*_files/
+/_m.html
