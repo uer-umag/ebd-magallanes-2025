@@ -9,21 +9,13 @@ title-block-banner: false
 ```{r}
 source("R/setup_web.R")
 moe <- 100 * 1.96 * sqrt(0.25 / N_TOTAL)
-SAT   <- c("Satisfecho", "Totalmente satisfecho")
-DEMO  <- "La democracia es preferible a cualquier otra forma de gobierno"
 
-# Una fila del índice: cifra en slab magenta, enunciado y destino
+# Una fila del índice: número de módulo en slab magenta, título, bajada y destino
 fila <- function(cifra, texto, href) {
   tags$li(tags$a(class = "indice-fila", href = href,
     span(class = "indice-cifra", cifra),
     span(class = "indice-texto", HTML(texto))
   ))
-}
-grupo <- function(nombre, href, ...) {
-  tags$section(class = "indice-grupo",
-    tags$h3(tags$a(href = href, nombre)),
-    tags$ol(...)
-  )
 }
 temas <- list(
   c("perfil.html", "Participantes"),
@@ -60,8 +52,7 @@ tags$section(class = "portada", style = "background-image:url('img/fotos/portada
       tags$p(paste0(num(N_TOTAL, 0), " personas entrevistadas en seis comunas · error muestral ±",
                     num(moe, 1), " puntos · terreno: noviembre de 2025"))
     )
-  ),
-  tags$p(class = "credito", "Fotografía: Punta Arenas. Boletín de Estudios Regionales N°2, UER-UMAG")
+  )
 )
 ```
 
@@ -69,8 +60,12 @@ tags$section(class = "portada", style = "background-image:url('img/fotos/portada
 div(class = "presentacion",
   tags$h2(class = "presentacion-rotulo", "Presentación"),
   div(class = "presentacion-texto",
-    tags$p("La Encuesta de Bienestar y Desarrollo Magallanes 2025 recoge la opinión de quienes habitan la región sobre su vida, el rumbo de Magallanes, la industria del hidrógeno verde, la ciencia y la democracia. Este sitio reúne sus resultados pregunta por pregunta."),
-    tags$p("La primera versión de la encuesta muestra una población satisfecha con su vida personal pero crítica del rumbo de la región y del centralismo. El hidrógeno verde despierta expectativas económicas altas, con poca información y una evaluación negativa de cómo se han tomado las decisiones. Cada cifra del índice enlaza con su gráfico, desagregado por sexo, edad, grupo socioeconómico y territorio.")
+    tags$p("La Encuesta de Bienestar y Desarrollo Magallanes 2025 recoge la opinión de quienes habitan la región sobre sus condiciones de vida y el desarrollo de la región. En esta versión del estudio se han incluido de manera especial un módulo sobre las perspectivas de la industria del hidrógeno verde y un módulo sobre visiones de la ciencia y la tecnología."),
+    tags$p("Este trabajo representa la continuidad de una agenda de investigación de la Unidad de Estudios Regionales respecto de las perspectivas ciudadanas sobre el bienestar y el desarrollo, iniciada en el año 2024 con la realización del Barómetro Regional. De esta manera, desde un esfuerzo orientado a la ciudadanía y el conocimiento público, se pone a disposición un conjunto de información inédita sobre el territorio."),
+    tags$p(HTML("Este sitio reúne los resultados de la encuesta, pregunta por pregunta, desagregados por sexo, edad, grupo socioeconómico y territorio. En <a href=\"metodologia.html\">Metodología</a> se incluye un resumen de la metodología implementada.")),
+    tags$h3("Cómo leer este sitio"),
+    tags$p(HTML("Cada pregunta se presenta con pestañas. La pestaña <b>Total</b> muestra la distribución de respuestas de la población adulta de la región, con porcentajes ponderados. Las pestañas <b>Sexo, Edad, GSE y Territorio</b> indican el porcentaje de cada respuesta dentro de cada grupo.")),
+    tags$p("En las baterías de preguntas que comparten una misma escala, la pestaña Total muestra la distribución completa de cada ítem y las demás resumen, por grupo, el porcentaje de respuestas favorables. Las cifras usan coma decimal; NS/NR significa «no sabe o no responde».")
   )
 )
 ```
@@ -81,27 +76,15 @@ tags$section(class = "indice", `aria-labelledby` = "indice-titulo",
   div(class = "indice-marco",
     tags$h2(id = "indice-titulo", class = "indice-rotulo",
             span("Ín"), span("di"), span("ce"),
-            span(class = "visually-hidden", " de resultados clave")),
+            span(class = "visually-hidden", " de contenidos")),
     div(class = "indice-lista",
-      grupo("Bienestar y percepción regional", "bienestar.html",
-        fila(P("a1", SAT), "está satisfecho o totalmente satisfecho con su vida.", "bienestar.html#a1"),
-        fila(P("a5", "Estancada"), paste0("cree que la región está <b>estancada</b>; ", P("a5", "Progresando"), " ve una región que progresa."), "bienestar.html#a5"),
-        fila(P("a7", "Ha aumentado el centralismo y la dependencia de Capital"), "percibe que ha aumentado el centralismo y la dependencia de Santiago.", "bienestar.html#a7"),
-        fila(P("a8_c", c("Aporta mucho", "Aporta bastante")), "cree que la Universidad de Magallanes aporta mucho o bastante al desarrollo regional: la institución mejor evaluada.", "bienestar.html#a8"),
-        fila(P("a6_b", "Habrá más oportunidades"), paste0("espera más oportunidades de trabajo en turismo en diez años; ", P("a6_f", "Habrá más oportunidades"), " en hidrógeno verde."), "bienestar.html#a6")
-      ),
-      grupo("Hidrógeno verde", "hidrogeno.html",
-        fila(P("b7", "Más bien un beneficio"), "ve la industria del hidrógeno verde como <b>un beneficio</b> para la región.", "hidrogeno.html#b7"),
-        fila(P("b1", c("Nada informado", "Poco informado")), "se siente nada o poco informado sobre la industria.", "hidrogeno.html#b1"),
-        fila(P("b11", "No"), "cree que las decisiones sobre el hidrógeno verde <b>no</b> han sido transparentes ni justas.", "hidrogeno.html#b11"),
-        fila(P("b5_c", c("Bastante confianza", "Mucha confianza")), "confía en la comunidad científica como fuente de información, la más creíble frente a gobiernos, empresas y ONG.", "hidrogeno.html#b5"),
-        fila(P("b12_c", c("Muy en desacuerdo", "En desacuerdo")), paste0("rechaza instalar refinerías de amoníaco en la pampa; los parques eólicos reúnen ", P("b12_a", c("De acuerdo", "Muy de acuerdo")), " de acuerdo."), "hidrogeno.html#b12")
-      ),
-      grupo("Ciencia y tecnología", "ciencia.html",
-        fila(P("c1", c("Muy importante", "Importante")), "considera que la ciencia es importante o muy importante en su día a día.", "ciencia.html#c1")
-      ),
-      grupo("Democracia", "democracia.html",
-        fila(P("d1", DEMO), paste0("prefiere la democracia a cualquier otra forma de gobierno; en el grupo D-E baja a ", P("d1", DEMO, "gse2", "D-E"), "."), "democracia.html#d1")
+      tags$ol(class = "indice-modulos",
+        fila("01", paste0("<b>Quiénes respondieron</b><br>", num(N_TOTAL, 0), " personas de 18 años o más, residentes en la región. Perfil demográfico, territorio y nivel socioeconómico."), "perfil.html"),
+        fila("02", "<b>Bienestar y percepción regional</b><br>Satisfacción con la vida, confianza, problemas urgentes de la región, futuro de Magallanes e instituciones.", "bienestar.html"),
+        fila("03", "<b>Hidrógeno verde</b><br>Conocimiento ciudadano, apoyo y expectativas, efectos esperados, confianza en los actores, gobernanza e infraestructura.", "hidrogeno.html"),
+        fila("04", "<b>Ciencia y tecnología</b><br>La ciencia en la vida cotidiana, visión actual y expectativas sobre su desarrollo.", "ciencia.html"),
+        fila("05", "<b>Apoyo a la democracia</b><br>Preferencia por la democracia frente a otras formas de gobierno.", "democracia.html"),
+        fila("06", "<b>Metodología</b><br>Ficha técnica del estudio y codificación de las preguntas abiertas.", "metodologia.html")
       )
     )
   )

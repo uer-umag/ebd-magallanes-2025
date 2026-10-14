@@ -93,7 +93,7 @@ FREQUENCIES VARIABLES = a1.
 
 :::
 
-El diseño se declara solo con el ponderador, sin estratos ni conglomerados de selección. Es el mismo supuesto conservador que se usa en las pruebas de este sitio (ver [Metodología](metodologia.qmd)).
+El diseño se declara con el ponderador `pond`: la estimación de la varianza se ajusta por el efecto de la ponderación (ver [Metodología](metodologia.qmd)).
 
 ## Confidencialidad
 

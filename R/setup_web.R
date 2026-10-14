@@ -54,8 +54,8 @@ ebd <- ebd |>
 
 N_TOTAL <- nrow(ebd)
 
-# Diseño para pruebas de independencia (mismo criterio que 02_setup.R:
-# ponderado, sin estratos)
+# Diseño para pruebas de independencia (mismo criterio que 02_setup.R): la
+# varianza y la prueba Rao-Scott se ajustan por el efecto de la ponderación.
 diseno <- svydesign(ids = ~1, weights = ~pond, data = ebd)
 
 # Cruces estándar ---------------------------------------------------------------
@@ -141,8 +141,9 @@ tab_pct_cruce <- function(var, by) {
                           levels = c("Total", levels(droplevels(ebd[[by]])))))
 }
 
-#' Prueba de independencia Rao-Scott (excluye NS/NR y No aplica)
-p_cruce <- function(var, by) {
+#' Prueba de independencia Rao-Scott (excluye NS/NR y No aplica).
+#' Devuelve el estadístico F, sus grados de libertad y el p-valor.
+rs_cruce <- function(var, by) {
   # Se rehace el diseño sobre la submuestra para eliminar niveles vacíos
   # (un nivel sin casos deja la tabla con ceros y el estadístico en NaN)
   d <- ebd |>
@@ -151,11 +152,14 @@ p_cruce <- function(var, by) {
     transmute(v = droplevels(factor(.data[[var]], ordered = FALSE)),
               g = droplevels(factor(.data[[by]], ordered = FALSE)), pond)
   sub <- svydesign(ids = ~1, weights = ~pond, data = d)
-  tryCatch(
-    suppressWarnings(svychisq(~ v + g, sub, statistic = "F")$p.value[[1]]),
-    error = function(e) NA_real_
-  )
+  tryCatch({
+    r <- suppressWarnings(svychisq(~ v + g, sub, statistic = "F"))
+    list(F = unname(r$statistic), df1 = unname(r$parameter[1]),
+         df2 = unname(r$parameter[2]), p = unname(r$p.value))
+  }, error = function(e) list(F = NA_real_, df1 = NA_real_, df2 = NA_real_, p = NA_real_))
 }
+
+p_cruce <- function(var, by) rs_cruce(var, by)$p
 
 #' Porcentaje (con NS/NR en la base) de las categorías `cats`
 pct_de <- function(var, cats, by = NULL) {
@@ -284,7 +288,7 @@ graf_barras <- function(t, colores = NULL, orden = c("frecuencia", "escala", "fi
       trigger = "item",
       formatter = htmlwidgets::JS(paste0(
         "function(p){var f=", js_pct, ";return '<b>'+p.name.replace(/\\n/g,' ')+'</b><br>'+f(p.value)+",
-        "'% <span style=\"color:#6e6680\">· n = '+p.data.n+'</span>';}"
+        "'%';}"
       ))
     )),
     series = list(list(
@@ -328,7 +332,7 @@ graf_columnas <- function(t, colores) {
       trigger = "item",
       formatter = htmlwidgets::JS(paste0(
         "function(p){var f=", js_pct, ";return '<b>'+p.name+'</b><br>'+f(p.value)+",
-        "'% <span style=\"color:#6e6680\">· n = '+p.data.n+'</span>';}"
+        "'%';}"
       ))
     )),
     series = list(list(
@@ -445,7 +449,7 @@ graf_agrupado <- function(t, filas, grupos, colores, sufijo = "%", max = NULL, d
       formatter = htmlwidgets::JS(paste0(
         "function(ps){var f=", js_num, ";var s='<b>'+ps[0].name.replace(/\\n/g,' ')+'</b>';",
         "ps.forEach(function(p){s+='<br>'+p.marker+p.seriesName+': <b>'+f(p.value)+'", sufijo,
-        "</b> <span style=\"color:#6e6680\">· n = '+p.data.n+'</span>';});return s;}"
+        "</b>';});return s;}"
       ))
     )),
     series = series
@@ -479,7 +483,7 @@ bloque_tabs <- function(id, paneles, texto = NULL) {
       class = paste("q-panel", if (i == 1) "activo"), id = paste0(id, "-", i), role = "tabpanel",
       if (!is.null(pn$nota)) tags$p(class = "q-nota", HTML(pn$nota)),
       pn$grafico,
-      div(class = "q-pie", HTML(pn$pie))
+      if (!is.null(pn$pie)) div(class = "q-pie", HTML(pn$pie))
     )
   })
   div(
@@ -491,22 +495,12 @@ bloque_tabs <- function(id, paneles, texto = NULL) {
   )
 }
 
-pie_base <- function(base, extra = NULL) {
-  paste0(
-    "<span>Respuestas: <b>", num(base, 0), "</b></span>",
-    if (!is.null(extra)) paste0("<span>", extra, "</span>")
-  )
-}
-
-pie_prueba <- function(var, by) {
-  p <- p_cruce(var, by)
-  if (is.na(p)) return(NULL)
-  sig <- p < 0.05
-  paste0(
-    "<span class='q-sig ", if (sig) "si" else "no", "'>",
-    if (sig) "Diferencia significativa" else "Sin diferencia significativa",
-    " (Rao-Scott, ", fmt_p(p), ")</span>"
-  )
+#' Pie de panel: partes no vacías como <span>. El n no se muestra (va una
+#' sola vez en Participantes) ni se informa significación (decisión del
+#' 2026-10-14, igual que el informe impreso).
+pie_base <- function(...) {
+  partes <- c(...)
+  if (length(partes)) paste0("<span>", partes, "</span>", collapse = "") else NULL
 }
 
 #' Pregunta de respuesta única.
@@ -517,7 +511,6 @@ bloque <- function(var, texto = NULL, tipo = c("nominal", "escala", "numerica"),
                    top = NULL, orden_fijo = FALSE) {
   tipo <- match.arg(tipo)
   t0 <- tab_pct(var)
-  base <- sum(t0$n)
   ns <- t0 |> filter(cat == "NS/NR") |> pull(pct)
   extra_ns <- if (length(ns) && ns > 0) paste0("NS/NR: ", pct(ns)) else NULL
   niveles <- setdiff(levels(t0$cat), c("NS/NR", "No aplica"))
@@ -532,11 +525,11 @@ bloque <- function(var, texto = NULL, tipo = c("nominal", "escala", "numerica"),
   if (tipo == "numerica") {
     m <- media_escala(var)
     g_total <- graf_columnas(t0, colores)
-    pie_total <- pie_base(base, paste0("Promedio: <b>", num(m$media, 1), "</b>"))
+    pie_total <- pie_base(paste0("Promedio: <b>", num(m$media, 1), "</b>"), extra_ns)
   } else {
     g_total <- graf_barras(t0, colores,
                            if (tipo == "escala") "escala" else if (orden_fijo) "fijo" else "frecuencia")
-    pie_total <- pie_base(base, extra_ns)
+    pie_total <- pie_base(extra_ns)
   }
   paneles <- list(list(titulo = "Total", grafico = g_total, pie = pie_total))
 
@@ -571,8 +564,7 @@ bloque <- function(var, texto = NULL, tipo = c("nominal", "escala", "numerica"),
       nota <- if (!is.null(top)) paste0("Se muestran las ", top, " respuestas más frecuentes.") else NULL
     }
     paneles[[length(paneles) + 1]] <- list(
-      titulo = cruces[[by]], grafico = g, nota = nota,
-      pie = pie_base(base, pie_prueba(var, by))
+      titulo = cruces[[by]], grafico = g, nota = nota
     )
   }
   bloque_tabs(var, paneles, texto)
@@ -598,13 +590,8 @@ bloque_bateria <- function(id, items, n_neg, neutral = NULL, favorables,
   t <- t_all |>
     mutate(fila = factor(unname(items[item]), levels = orden_items))
   g_total <- graf_apilado(t, niveles, colores, ancho_eje = 34)
-  bases <- range(fav$base)
-  base_txt <- if (bases[1] == bases[2]) num(bases[1], 0) else
-    paste0(num(bases[1], 0), "–", num(bases[2], 0))
-  pie_total <- paste0(
-    "<span>Respuestas por ítem: <b>", base_txt, "</b></span>",
-    "<span>Ítems ordenados por ", tolower(etiqueta_fav), "</span>"
-  )
+  pie_total <- pie_base(paste0("Ítems ordenados por ", tolower(etiqueta_fav)),
+                        "NS/NR no se grafica")
   paneles <- list(list(titulo = "Total", grafico = g_total, pie = pie_total))
 
   for (by in cruzar) {
@@ -615,19 +602,34 @@ bloque_bateria <- function(id, items, n_neg, neutral = NULL, favorables,
         summarise(valor = sum(pct[cat %in% favorables]), n = sum(n), .groups = "drop") |>
         mutate(fila = unname(items[v]), grupo = as.character(grupo))
     })
-    n_sig <- sum(map_dbl(vars, ~ p_cruce(.x, by)) < 0.05, na.rm = TRUE)
     g <- graf_agrupado(tg, orden_items, grupos, colores_grupo(by, grupos), max = 100)
     paneles[[length(paneles) + 1]] <- list(
       titulo = cruces[[by]], grafico = g,
-      nota = paste0("Porcentaje que responde <b>", etiqueta_fav, "</b>."),
-      pie = paste0(
-        "<span>Respuestas por ítem: <b>", base_txt, "</b></span>",
-        "<span class='q-sig ", if (n_sig > 0) "si" else "no", "'>",
-        n_sig, " de ", length(vars), " ítems con diferencia significativa (Rao-Scott, p < 0,05)</span>"
-      )
+      nota = paste0("Porcentaje que responde <b>", etiqueta_fav, "</b>.")
     )
   }
   bloque_tabs(id, paneles, texto)
+}
+
+#' Entrevistas sin ponderar por grupo de análisis (única mención del n en el sitio)
+tabla_n <- function() {
+  filas <- c(list(tags$tr(tags$th(scope = "row", "Total"), tags$td(tags$b(num(nrow(ebd), 0))))),
+    unlist(imap(cruces, function(nombre, by) {
+      grupos <- levels(droplevels(ebd[[by]]))
+      map(seq_along(grupos), function(i) tags$tr(
+        tags$th(scope = "row",
+                if (i == 1) tags$span(class = "tabla-n-cruce", nombre),
+                grupos[i]),
+        tags$td(num(sum(as.character(ebd[[by]]) == grupos[i], na.rm = TRUE), 0))
+      ))
+    }), recursive = FALSE))
+  div(class = "q-bloque",
+    tags$p(class = "q-texto", tags$b("Entrevistas por grupo de análisis"), " (número sin ponderar)"),
+    tags$table(class = "tabla-n",
+      tags$thead(tags$tr(tags$th(scope = "col", "Grupo"), tags$th(scope = "col", "Entrevistas"))),
+      tags$tbody(filas)),
+    tags$p(class = "q-fuente", "Fuente: UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025.")
+  )
 }
 
 # Cifras para el texto ------------------------------------------------------------

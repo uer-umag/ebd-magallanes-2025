@@ -11,7 +11,11 @@ source("R/setup_web.R")
 sin_cruces <- character(0)
 ```
 
-Los porcentajes de esta sección están **ponderados** por sexo, edad y conglomerado, de modo que la muestra reproduce la estructura de la población regional. Al pasar el cursor sobre cada barra se muestra el número de entrevistas sin ponderar (*n*).
+Los resultados han sido **ponderados** por sexo, edad y conglomerado (definido por los grupos Punta Arenas y resto de la región), de modo que la muestra final reproduce la estructura de la población regional. Como referencia, la tabla siguiente indica el número de entrevistas sin ponderar en cada grupo de análisis.
+
+```{r}
+tabla_n()
+```
 
 ## Perfil demográfico
 
@@ -27,12 +31,6 @@ bloque("sexo", cruzar = sin_cruces, orden_fijo = TRUE)
 bloque("edad2", cruzar = sin_cruces, orden_fijo = TRUE)
 ```
 
-### Nacionalidad {#nacionalidad}
-
-```{r}
-bloque("e2", cruzar = sin_cruces, orden_fijo = TRUE)
-```
-
 ## Territorio
 
 ### Conglomerado {#conglomerado}
@@ -41,13 +39,7 @@ bloque("e2", cruzar = sin_cruces, orden_fijo = TRUE)
 bloque("conglomerado", cruzar = sin_cruces, orden_fijo = TRUE)
 ```
 
-En el análisis, *Territorio* compara Punta Arenas con el resto de la región (Natales, Porvenir, Primavera, Cabo de Hornos y Río Verde). El resto de la región se sobrerrepresentó en la muestra para poder analizarlo por separado; la ponderación devuelve a cada conglomerado su peso real.
-
-### Comuna de residencia {#comuna}
-
-```{r}
-bloque("comuna_cod", cruzar = sin_cruces)
-```
+En el análisis, *Territorio* compara Punta Arenas con el resto de la región (Natales, Porvenir, Primavera y Cabo de Hornos). El resto de la región se sobrerrepresentó en la muestra para poder analizarlo por separado; la ponderación devuelve a cada conglomerado su peso real.
 
 ### Zona {#zona}
 

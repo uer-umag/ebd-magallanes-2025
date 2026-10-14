@@ -70,7 +70,7 @@ para que se actualicen solas si cambian los datos.
   denominador (no se dibuja en barras apiladas).
 - Las escalas guardadas de positivo a negativo (`a5`, `a6_*`, `a8_*`, `b6`, `c1`, `c3`)
   se invierten en `setup_web.R` para ordenarlas de negativo a positivo.
-- Prueba χ² de Rao-Scott (excluye NS/NR), p < 0,05.
+- Sin pruebas de significación ni n en gráficos (decisión 2026-10-14); `rs_cruce()`/`p_cruce()` quedan disponibles para análisis.
 
 ## Diseño
 

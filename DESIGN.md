@@ -270,7 +270,7 @@ Sin tarjeta. Anatomía fija, en orden:
 3. Pestañas Total / Sexo / Edad / GSE / Territorio: etiquetas en mayúsculas espaciadas, tinta 3; hover noche con subrayado lila; activa noche con subrayado magenta de 3px; filete lila bajo la fila. Flechas izquierda/derecha cambian de pestaña. Los paneles ocultos usan `visibility`, no `display:none`, para que echarts mida el ancho real.
 4. Nota opcional (0.86rem, tinta 2).
 5. Gráfico.
-6. Pie sobre filete lila: «Respuestas: **n**», NS/NR o promedio, y en cruces la prueba Rao-Scott con punto magenta (significativa) o gris #cfc9da (no).
+6. Pie sobre filete lila: NS/NR, promedio u orden de los ítems. Sin n ni prueba de significación (decisión 2026-10-14).
 7. Línea de fuente en itálica 13px: «Fuente: UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025.»
 
 ### Gráficos

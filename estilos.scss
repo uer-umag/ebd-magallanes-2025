@@ -1,6 +1,6 @@
 /*-- scss:defaults --*/
 
-// Tipografía del Boletín de Estudios Regionales N°1 (UER-UMAG):
+// Tipografía institucional UER-UMAG:
 // Asap para texto (la misma del impreso); Bitter como sustituto web de
 // Museo Slab (titulares slab negra itálica y bajadas slab liviana).
 @import url("https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600&family=Bitter:ital,wght@0,300;1,300;1,400;1,800;1,900&display=swap");
@@ -131,17 +131,6 @@ html { scrollbar-color: var(--violeta-claro) var(--lavanda); }
 }
 .quarto-title-meta, .quarto-title-banner .description { display: none; }
 
-/* Crédito fotográfico de cada apertura (borde derecho, vertical) */
-.quarto-title-banner .quarto-title::after {
-  content: "Fotografía: Boletín de Estudios Regionales, UER-UMAG";
-  position: absolute; right: .55rem; bottom: 1rem;
-  writing-mode: vertical-rl; transform: rotate(180deg);
-  font-family: "Asap", sans-serif; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
-  color: #fff;
-  background: rgba(39,23,67,.72);
-  padding: .55rem .2rem;
-}
-
 /* Cita destacada: itálica magenta del impreso */
 .cita {
   margin: 2.4rem 0 2.6rem;
@@ -163,7 +152,7 @@ html { scrollbar-color: var(--violeta-claro) var(--lavanda); }
 
 /* Cabecera corrida del impreso, bajo cada apertura */
 #title-block-header::after {
-  content: "BOLETÍN DE ESTUDIOS REGIONALES / UER-UMAG";
+  content: "ENCUESTA DE BIENESTAR Y DESARROLLO MAGALLANES 2025";
   grid-column: body-content-start / body-content-end;
   display: block;
   margin: 1.1rem 0 .4rem;
@@ -271,7 +260,7 @@ main p { max-width: 70ch; }
   margin: .35rem 0 0;
 }
 
-/* Portada: tapa del boletín ---------------------------------------------------- */
+/* Portada ---------------------------------------------------- */
 .portada {
   position: relative;
   isolation: isolate;
@@ -341,12 +330,6 @@ main p { max-width: 70ch; }
 .portada-pie { display: flex; align-items: center; gap: 1.6rem; flex-wrap: wrap; }
 .portada-pie img { height: 46px; width: auto; }
 .portada-pie p { margin: 0; font-size: .9rem; color: #e4daf3; max-width: 30rem; }
-.credito {
-  position: absolute; right: .6rem; bottom: 1rem;
-  writing-mode: vertical-rl; transform: rotate(180deg);
-  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
-  color: rgba(255,255,255,.78); margin: 0;
-}
 
 /* Presentación: rótulo vertical magenta como en el impreso ---------------------- */
 .presentacion {
@@ -501,3 +484,15 @@ body:has(.portada) #quarto-content { margin-top: 0; padding-top: 0; }
   .descarga { grid-template-columns: 1fr; gap: .35rem; }
   .descarga-enlace { justify-self: start; margin-top: .25rem; }
 }
+
+/* Entrevistas por grupo (Participantes): única mención del n en el sitio */
+.tabla-n { width: 100%; max-width: 26rem; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.tabla-n th, .tabla-n td { padding: .32rem .2rem; border-bottom: 1px solid var(--filete); font-weight: 400; }
+.tabla-n thead th { font-weight: 700; color: var(--noche); border-bottom: 1.5px solid var(--noche); }
+.tabla-n td { text-align: right; }
+.tabla-n tbody th { text-align: left; }
+.tabla-n-cruce { display: block; margin-top: .5rem; font-size: .72rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--tinta3, #6e6680); }
+.tabla-n td { vertical-align: bottom; }
+.tabla-n tbody tr { background: transparent !important; }
+.indice-modulos { list-style: none; padding-left: 0; margin: 0; }

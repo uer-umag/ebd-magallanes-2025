@@ -1,7 +1,7 @@
 ---
 title: "Visiones ciudadanas sobre el *hidrógeno verde*"
 pagetitle: "Hidrógeno verde · EBD Magallanes 2025"
-subtitle: "Qué sabe la ciudadanía sobre la industria, cuánto la apoya, qué efectos espera y cómo evalúa el proceso de decisión"
+subtitle: "Nivel de conocimiento de la ciudadanía sobre la industria, apoyo declarado, efectos esperados y evaluación del proceso de toma de decisiones"
 description: "Conocimiento, apoyo, efectos esperados, confianza y gobernanza de la industria del hidrógeno verde en Magallanes."
 title-block-banner: img/fotos/hidrogeno.jpg
 ---
@@ -16,7 +16,7 @@ INFO   <- c("Bastante informado", "Muy informado")
 POCO   <- c("Nada informado", "Poco informado")
 ```
 
-## Conocimiento
+## Conocimiento ciudadano
 
 ### Nivel de información {#b1}
 
@@ -47,7 +47,7 @@ bloque("b6",
 
 El tema circula poco en la vida cotidiana: `r P("b6", "Nunca")` nunca lo ha conversado y solo `r P("b6", "Con bastante frecuencia")` lo hace con frecuencia. En el grupo D-E más de la mitad (`r P("b6", "Nunca", "gse2", "D-E")`) nunca ha hablado del tema.
 
-## Apoyo y expectativas
+## Nivel de apoyo y expectativas asociadas
 
 ### Apoyo a la industria {#b3}
 
@@ -111,7 +111,7 @@ bloque_bateria("b8",
 
 Las expectativas son claramente favorables en lo económico —crecimiento (`r P("b8_a", POS4)`), sueldos y empleos, infraestructura— y se dividen en lo territorial y ambiental. El costo de la vida es el área más disputada: `r P("b8_e", c("Muy negativo", "Negativo"))` anticipa un efecto negativo. El paisaje, el medioambiente y la llegada de más personas también reúnen a más de un tercio de expectativas negativas.
 
-## Confianza y actores
+## Confianza y rol de los actores
 
 ### Confianza en fuentes de información {#b5}
 
@@ -172,7 +172,7 @@ bloque("b11",
 
 `r P("b11", "No")` cree que las decisiones **no** han sido transparentes ni justas. La desconfianza es mayor entre las mujeres (`r P("b11", "No", "sexo", "Mujer")`) que entre los hombres (`r P("b11", "No", "sexo", "Hombre")`).
 
-## Infraestructura {#b12}
+## Percepción de la infraestructura propuesta {#b12}
 
 ```{r}
 bloque_bateria("b12",

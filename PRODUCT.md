@@ -20,7 +20,7 @@ celular. Necesitan entender una cifra y su contexto en segundos y poder citarla.
   terreno 4–26 de noviembre de 2025; error ±3,8 pp (MAS, 95%).
 - Porcentajes con 1 decimal, coma decimal y punto de miles (es-CL).
 - NS/NR en el denominador; «No aplica» fuera de la base.
-- Diferencias entre grupos informadas con prueba Rao-Scott (p < 0,05).
+- Sin reporte de significación estadística (decisión 2026-10-14: confunde a lectores no expertos); el n se informa una sola vez, por grupo, en Participantes.
 - Fuente obligatoria: «UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025».
 
 ## Marca

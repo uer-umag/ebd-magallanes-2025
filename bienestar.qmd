@@ -23,7 +23,7 @@ bloque("a1",
   tipo = "escala", n_neg = 2, neutral = "Indiferente")
 ```
 
-Casi nueve de cada diez personas (`r P("a1", SAT)`) se declaran satisfechas o totalmente satisfechas con su vida, y la mitad elige el extremo superior de la escala. Es una de las respuestas más homogéneas de la encuesta: no hay diferencias significativas por sexo, edad, grupo socioeconómico ni territorio.
+Casi nueve de cada diez personas (`r P("a1", SAT)`) se declaran satisfechas o totalmente satisfechas con su vida, y la mitad elige el extremo superior de la escala. Es una de las respuestas más homogéneas de la encuesta: los resultados son muy similares por sexo, edad, grupo socioeconómico y territorio.
 
 ### Satisfacción con ámbitos de la vida {#a2}
 
@@ -80,7 +80,7 @@ Salud (`r P("a4_tema", "Salud")`) y seguridad (`r P("a4_tema", "Seguridad")`) co
 
 ## Presente y futuro de Magallanes
 
-### ¿Hacia dónde va la región? {#a5}
+### Percepción de progreso {#a5}
 
 ```{r}
 bloque("a5",
@@ -90,9 +90,6 @@ bloque("a5",
 
 La percepción dominante es de estancamiento (`r P("a5", "Estancada")`), por sobre quienes ven una región que progresa (`r P("a5", "Progresando")`). Solo una minoría habla de decadencia. Esta lectura es transversal a los grupos.
 
-::: {.cita}
-La percepción dominante es de estancamiento: `r P("a5", "Estancada")` cree que la región está estancada, por sobre quienes ven una región que progresa.
-:::
 
 ### Velocidad del cambio {#a10}
 
@@ -124,7 +121,7 @@ bloque_bateria("a6",
   texto = "Imagine el futuro de la región de Magallanes de aquí a 10 años más. ¿Usted cree que habrá más o menos oportunidades para trabajar en las siguientes áreas?")
 ```
 
-El turismo (`r P("a6_b", MAS)`) y el hidrógeno verde (`r P("a6_f", MAS)`) son las dos áreas donde una clara mayoría espera más empleo. En las actividades tradicionales —ganadería, pesca, hidrocarburos— y en el sector público las expectativas están divididas. Fuera de Punta Arenas el optimismo es mayor respecto de la salmonicultura, el comercio y el sector portuario.
+Una aproximación acerca de las principales áreas de desarrollo en la región es la pregunta acerca de la percepción de las personas acerca de las oportunidades de trabajo en el futuro. El turismo (`r P("a6_b", MAS)`) y el hidrógeno verde (`r P("a6_f", MAS)`) son las dos áreas donde una clara mayoría espera más empleo. En las actividades tradicionales —ganadería, pesca, hidrocarburos— y en el sector público las expectativas están divididas. Fuera de Punta Arenas el optimismo es mayor respecto de la salmonicultura, el comercio y el sector portuario.
 
 ## Instituciones y toma de decisiones
 

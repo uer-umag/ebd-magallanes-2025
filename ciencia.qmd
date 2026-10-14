@@ -42,13 +42,13 @@ bloque_bateria("c2",
   texto = "¿Con qué frecuencia (nunca, pocas veces, muchas veces, siempre) realiza usted cada una de las siguientes actividades?")
 ```
 
-Internet y las redes sociales son la principal puerta de entrada a la ciencia (`r P("c2_a", FREC)` lo hace muchas veces o siempre). Los formatos más especializados —podcasts, revistas científicas— son minoritarios. Las seis actividades muestran brechas significativas por nivel socioeconómico: en el grupo D-E, `r P("c2_a", "Nunca", "gse2", "D-E")` nunca se informa de ciencia por internet, frente a `r P("c2_a", "Nunca", "gse2", "ABC1")` en el ABC1.
+Internet y las redes sociales son la principal puerta de entrada a la ciencia (`r P("c2_a", FREC)` lo hace muchas veces o siempre). Los formatos más especializados —podcasts, revistas científicas— son minoritarios. Las seis actividades muestran brechas marcadas por nivel socioeconómico: en el grupo D-E, `r P("c2_a", "Nunca", "gse2", "D-E")` nunca se informa de ciencia por internet, frente a `r P("c2_a", "Nunca", "gse2", "ABC1")` en el ABC1.
 
 ::: {.cita}
 Internet y las redes sociales son la principal puerta de entrada a la ciencia, pero con brechas socioeconómicas en todas las formas de acercarse a ella.
 :::
 
-## Balance y expectativas
+## Visión actual y expectativas sobre el desarrollo de la ciencia y la tecnología
 
 ### Balance de la ciencia y la tecnología {#c3}
 

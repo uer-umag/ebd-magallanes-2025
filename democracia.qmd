@@ -13,8 +13,6 @@ LOMISMO <- "A la gente como uno, nos da lo mismo un régimen democrático que un
 AUTOR <- "En algunas circunstancias, un gobierno autoritario puede ser preferible a uno democrático."
 ```
 
-## Apoyo a la democracia
-
 ### Preferencia por tipo de gobierno {#d1}
 
 ```{r}
