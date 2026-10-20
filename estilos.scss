@@ -260,11 +260,6 @@ main p { max-width: 70ch; }
 }
 .q-sig.si::before { background: var(--magenta); }
 .q-sig.no::before { background: #cfc9da; }
-.q-fuente {
-  font-size: 13px; color: var(--tinta-3); font-style: italic;
-  margin: .35rem 0 0;
-}
-
 /* Tabla desplegable bajo el gráfico: la tabla «por grupo» del informe ------- */
 .q-tabla { margin-top: .55rem; }
 .q-tabla > summary {

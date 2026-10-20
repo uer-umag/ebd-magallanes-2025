@@ -153,7 +153,7 @@ components:
 
 **Creative North Star: "El boletín hecho navegable"**
 
-El sitio es un número del Boletín de Estudios Regionales UER-UMAG (N°1, junio 2025) traducido a la pantalla. Cada sección abre como un artículo del impreso: campo noche violeta, fotografía regional a la derecha, titular slab con una línea liviana y otra negra itálica, bajada en barras magenta y una trama de puntos blancos. Debajo, el cuerpo es blanco, en Asap, y cada pregunta del cuestionario se presenta como una figura impresa: filete superior, enunciado «P:», pestañas de desagregación, gráfico, pie con base y prueba, y línea de fuente.
+El sitio es un número del Boletín de Estudios Regionales UER-UMAG (N°1, junio 2025) traducido a la pantalla. Cada sección abre como un artículo del impreso: campo noche violeta, fotografía regional a la derecha, titular slab con una línea liviana y otra negra itálica, bajada en barras magenta y una trama de puntos blancos. Debajo, el cuerpo es blanco, en Asap, y cada pregunta del cuestionario se presenta como una figura impresa: filete superior, enunciado «P:», pestañas de desagregación, gráfico, pie y tabla desplegable. Sin línea de fuente: todo el sitio es la encuesta (decisión 2026-10-20; el informe impreso sí la lleva).
 
 La densidad es editorial, no de tablero: una columna de lectura de 880px con índice lateral a la izquierda, párrafos de comentario entre figuras, sin tarjetas ni contenedores con fondo. El color se concentra en las aperturas, la portada y el índice (campos noche violeta a sangre); el cuerpo es papel blanco con tinta violeta oscura, turquesa en los encabezados de sección y magenta reservado para lo que señala.
 
@@ -188,7 +188,7 @@ Una noche violeta profunda como campo, violetas medios como voz del dato, y tres
 ### Neutral
 - **Tinta** (tinta): texto de cuerpo.
 - **Tinta 2** (tinta-2): notas de figura y subniveles del índice lateral.
-- **Tinta 3** (tinta-3): pestañas inactivas, pie de figura y línea de fuente.
+- **Tinta 3** (tinta-3): pestañas inactivas y pie de figura.
 - **Filete lila** (filete): reglas internas de la figura (bajo las pestañas, sobre el pie) y de la ficha técnica.
 - **Papel** (papel): fondo de lectura; texto sobre campos noche.
 - **Lila de pie** (lila-pie): texto del pie de página sobre noche.
@@ -220,7 +220,7 @@ Una noche violeta profunda como campo, violetas medios como voz del dato, y tres
 - **Cita** (Asap 500 itálica, clamp(1.2rem, 2vw, 1.42rem), 1.42): cita destacada magenta.
 - **Body** (Asap 400, raíz 17.5px, 1.62): comentario; máximo 70ch, justificado con guiones desde 768px.
 - **Label** (Asap 700, 0.76rem, 0.1em, mayúsculas): pestañas de desagregación.
-- **Pie** (Asap 13–13.5px): pie de figura y línea de fuente (esta en itálica).
+- **Pie** (Asap 13–13.5px): pie de figura.
 - **Rótulos verticales** (Bitter 300 itálica 3.1rem magenta «Presentación»; Asap 300 mayúsculas hasta 7.4rem blanco «ÍNDICE»): rótulos de página del impreso, uno por bloque.
 
 ### Named Rules
@@ -272,7 +272,6 @@ Sin tarjeta. Anatomía fija, en orden:
 5. Gráfico.
 6. Pie sobre filete lila: NS/NR, promedio u orden de los ítems. Sin n ni prueba de significación (decisión 2026-10-14).
 7. Tabla desplegable (`<details>`, cerrada por defecto): «Ver tabla / Ocultar tabla» en mayúsculas espaciadas violeta con chevron. Dentro, la tabla «por grupo» del informe impreso: Total en negrita noche + grupos de cada cruce bajo encabezados en mayúsculas tinta 3, filetes lila entre filas y entre cruces, NS/NR en itálica tinta 3, sin franjas. En celular se desplaza dentro de su caja con la primera columna fija. Sin cruces (Participantes) queda solo la columna Total, de 26rem.
-8. Línea de fuente en itálica 13px: «Fuente: UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025.»
 
 ### Gráficos
 - **Barras horizontales (Total):** violeta, o colores divergentes en escalas; etiquetas de categoría en noche 14px; valor en negrita 13px a la derecha, con coma decimal; sin ejes visibles. NS/NR al final, en gris.
@@ -297,7 +296,7 @@ Lista de definiciones en dos columnas (término violeta 700 + valor), filete noc
 
 ### Do:
 - **Do** abrir cada página de sección con la apertura: foto de los boletines UER, titular con su parte en cursiva, bajada y crédito fotográfico.
-- **Do** presentar toda pregunta con la anatomía completa de la figura, incluida la línea de fuente.
+- **Do** presentar toda pregunta con la anatomía completa de la figura.
 - **Do** escribir cifras en es-CL: un decimal, coma decimal, punto de miles, sin signo % cuando el eje ya lo indica.
 - **Do** usar la paleta divergente ámbar↔gris↔turquesa para escalas, la rampa violeta para grupos ordinales y turquesa + magenta profundo para dos grupos nominales.
 - **Do** dar a cada gráfico su versión de celular (etiqueta sobre la barra, alto móvil) con el mecanismo `media` y `data-alto-movil`.

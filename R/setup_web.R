@@ -596,7 +596,8 @@ tabla_desplegable <- function(etiquetas, valores, cols, texto = NULL, nota = NUL
 
 # Bloques de pregunta ------------------------------------------------------------
 
-#' Contenedor con pestañas (Total / Sexo / Edad / GSE / Territorio)
+#' Contenedor con pestañas (Total / Sexo / Edad / GSE / Territorio). Sin línea
+#' de fuente: en el sitio es redundante (sí la lleva el informe impreso).
 bloque_tabs <- function(id, paneles, texto = NULL, tabla = NULL) {
   botones <- imap(paneles, function(pn, i) {
     tags$button(
@@ -618,8 +619,7 @@ bloque_tabs <- function(id, paneles, texto = NULL, tabla = NULL) {
     if (!is.null(texto)) tags$p(class = "q-texto", tags$b("P:"), " ", texto),
     if (length(paneles) > 1) div(class = "q-tabs", role = "tablist", `aria-label` = "Desagregación", botones),
     div(class = "q-paneles", cuerpos),
-    tabla,
-    tags$p(class = "q-fuente", "Fuente: UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025.")
+    tabla
   )
 }
 
@@ -779,8 +779,7 @@ tabla_n <- function() {
     tags$p(class = "q-texto", tags$b("Entrevistas por grupo de análisis"), " (número sin ponderar)"),
     tags$table(class = "tabla-n",
       tags$thead(tags$tr(tags$th(scope = "col", "Grupo"), tags$th(scope = "col", "Entrevistas"))),
-      tags$tbody(filas)),
-    tags$p(class = "q-fuente", "Fuente: UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025.")
+      tags$tbody(filas))
   )
 }
 
