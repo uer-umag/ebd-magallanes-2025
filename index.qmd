@@ -8,7 +8,6 @@ title-block-banner: false
 
 ```{r}
 source("R/setup_web.R")
-moe <- 100 * 1.96 * sqrt(0.25 / N_TOTAL)
 
 # Una fila del índice: número de módulo en slab magenta, título, bajada y destino
 fila <- function(cifra, texto, href) {
@@ -48,9 +47,7 @@ tags$section(class = "portada", style = "background-image:url('img/fotos/portada
       ))
     ),
     div(class = "portada-pie",
-      tags$img(src = "img/logo_uer_blanco.png", alt = "Unidad de Estudios Regionales, Universidad de Magallanes"),
-      tags$p(paste0(num(N_TOTAL, 0), " personas entrevistadas en seis comunas · error muestral ±",
-                    num(moe, 1), " puntos · terreno: noviembre de 2025"))
+      tags$img(src = "img/logo_uer_blanco.png", alt = "Unidad de Estudios Regionales, Universidad de Magallanes")
     )
   )
 )
