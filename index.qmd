@@ -49,7 +49,10 @@ tags$section(class = "portada", style = "background-image:url('img/fotos/portada
       ))
     ),
     div(class = "portada-acciones",
-      tags$a(class = "portada-accion principal", href = informe_pdf, download = NA,
+      # Se abre en una pestaña nueva (visor PDF del navegador), no se descarga
+      tags$a(class = "portada-accion principal", href = informe_pdf,
+             target = "_blank", rel = "noopener",
+             `aria-label` = "Descargar informe de resultados (PDF, se abre en una pestaña nueva)",
         span(class = "accion-titulo", "Descargar informe de resultados"),
         span(class = "accion-detalle", paste0("PDF · ", num(file.size(informe_pdf) / 1024^2, 1), " MB"))
       ),

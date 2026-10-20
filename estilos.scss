@@ -413,7 +413,7 @@ main p { max-width: 70ch; }
   font-size: 1.35rem; font-weight: 700; line-height: 1;
 }
 .portada-accion.principal { background: var(--magenta); border-color: var(--magenta); }
-.portada-accion.principal::before { content: "↓"; }
+.portada-accion.principal::before { content: "↗"; }
 .portada-accion:hover { color: #fff; background: rgba(255,255,255,.14); }
 .portada-accion.principal:hover { background: #b51f72; border-color: #b51f72; }
 .portada-accion:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
