@@ -61,6 +61,11 @@ bloque_bateria("b5", items = c(b5_a = "Gobierno de Chile", ...),
                etiqueta_fav = "Bastante o mucha confianza")
 ```
 
+Cada bloque incluye bajo el gráfico una **tabla desplegable** («Ver tabla») con
+las mismas cifras que la tabla «por grupo» del informe impreso: `bloque()` y
+`bloque_bateria()` la arman con `valores_cruce()` / `valores_bateria()`, que
+también usa `../Informe_EBD2025`. Las columnas siguen `cruzar`; sin cruces, solo Total.
+
 Las cifras del texto se escriben con `` `r P("a1", c("Satisfecho", "Totalmente satisfecho"))` ``
 para que se actualicen solas si cambian los datos.
 

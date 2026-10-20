@@ -237,9 +237,14 @@ main p { max-width: 70ch; }
 .q-tab.activo { color: var(--noche); border-bottom-color: var(--magenta); }
 
 .q-paneles { position: relative; }
-/* Los paneles ocultos conservan su ancho para que echarts dimensione bien */
-.q-panel { position: absolute; top: 0; left: 0; right: 0; visibility: hidden; pointer-events: none; }
-.q-panel.activo { position: relative; visibility: visible; pointer-events: auto; }
+/* Los paneles ocultos conservan su ancho para que echarts dimensione bien,
+   pero no su alto: si sobresalen del activo, el contenedor de la celda de
+   Quarto (overflow auto) envuelve el gráfico en una ventana con scroll */
+.q-panel { position: absolute; top: 0; left: 0; right: 0; height: 0; overflow: hidden;
+  visibility: hidden; pointer-events: none; }
+.q-panel.activo { position: relative; height: auto; overflow: visible;
+  visibility: visible; pointer-events: auto; }
+.cell-output-display:has(> .q-bloque) { overflow: visible; }
 
 .q-nota { font-size: .86rem; color: var(--tinta-2); margin: 0 0 .5rem; }
 .q-pie {
@@ -258,6 +263,75 @@ main p { max-width: 70ch; }
 .q-fuente {
   font-size: 13px; color: var(--tinta-3); font-style: italic;
   margin: .35rem 0 0;
+}
+
+/* Tabla desplegable bajo el gráfico: la tabla «por grupo» del informe ------- */
+.q-tabla { margin-top: .55rem; }
+.q-tabla > summary {
+  display: inline-flex; align-items: center; gap: .45rem;
+  list-style: none; cursor: pointer;
+  padding: .3rem 0;
+  font-size: .76rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--violeta);
+}
+.q-tabla > summary::-webkit-details-marker { display: none; }
+.q-tabla > summary::before {
+  content: ""; width: .42rem; height: .42rem;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg); transition: transform .15s;
+}
+.q-tabla > summary:hover { color: var(--noche); }
+.q-tabla[open] > summary::before { transform: rotate(45deg); margin-top: -.2rem; }
+.q-tabla-ocultar, .q-tabla[open] .q-tabla-ver { display: none; }
+.q-tabla[open] .q-tabla-ocultar { display: inline; }
+
+.q-tabla-etiqueta {
+  font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--tinta-3); margin: .45rem 0 .3rem;
+}
+/* width 0 + min-width 100%: la tabla no ensancha la columna de la grilla
+   (en celular se desplaza dentro de su caja, no la página entera) */
+.q-tabla-scroll { overflow-x: auto; width: 0; min-width: 100%; }
+.q-tabla-nota { font-size: 13px; color: var(--tinta-2); margin: .4rem 0 0; }
+
+.tabla-cruce {
+  width: 100%; border-collapse: collapse;
+  font-size: 13.5px; line-height: 1.3; font-variant-numeric: tabular-nums;
+  color: var(--tinta);
+}
+.tabla-cruce { margin-bottom: 0; }
+/* Sin cruces (Participantes): solo Total, angosta como la tabla de entrevistas */
+.tabla-cruce.tc-simple { max-width: 26rem; }
+/* Quarto agrega las clases de tabla de Bootstrap (franjas, bordes): se anulan */
+.tabla-cruce th, .tabla-cruce td {
+  padding: .3rem .4rem; border-bottom: 1px solid var(--filete);
+  font-weight: 400; vertical-align: bottom;
+  background-color: transparent; box-shadow: none !important;
+}
+.tabla-cruce td { text-align: right; white-space: nowrap; }
+.tabla-cruce thead th { color: var(--noche); font-weight: 700; text-align: right; white-space: nowrap; }
+.tabla-cruce thead tr:last-child th, .tabla-cruce thead .tc-total {
+  border-bottom: 1.5px solid var(--noche);
+}
+.tabla-cruce thead td { border-bottom: 1.5px solid var(--noche); }
+.tabla-cruce .tc-cruce {
+  text-align: center; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--tinta-3); padding-bottom: .2rem;
+}
+.tabla-cruce .tc-inicio, .tabla-cruce .tc-cruce { border-left: 1px solid var(--filete); }
+.tabla-cruce .tc-total { font-weight: 700; color: var(--noche); }
+.tabla-cruce tbody th { text-align: left; min-width: 11rem; }
+.tabla-cruce tbody tr { background: transparent !important; }
+.tabla-cruce tbody tr:hover { background: var(--lavanda) !important; }
+.tabla-cruce .tc-ns th, .tabla-cruce .tc-ns td { font-style: italic; color: var(--tinta-3); }
+/* En pantallas angostas la tabla se desplaza con la primera columna fija */
+.tabla-cruce tbody th, .tabla-cruce thead td:first-child {
+  position: sticky; left: 0; background: #ffffff; z-index: 1;
+}
+.tabla-cruce tbody tr:hover th { background: var(--lavanda); }
+@media (max-width: 559.98px) {
+  .tabla-cruce { font-size: 12.5px; }
+  .tabla-cruce tbody th { min-width: 8.5rem; max-width: 10rem; }
 }
 
 /* Portada ---------------------------------------------------- */

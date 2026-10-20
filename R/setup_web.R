@@ -259,20 +259,26 @@ ec <- function(opt, alto, movil = NULL, alto_movil = NULL) {
   div(class = "ec-wrap", `data-alto` = alto, `data-alto-movil` = round(alto_movil), w)
 }
 
-#' Barras horizontales, una serie (panel Total)
-graf_barras <- function(t, colores = NULL, orden = c("frecuencia", "escala", "fijo")) {
+#' Orden de las filas del panel Total (lo reutilizan la tabla desplegable y
+#' el informe impreso)
+ordenar_total <- function(t, orden = c("frecuencia", "escala", "fijo")) {
   orden <- match.arg(orden)
   t <- t |> filter(pct > 0 | cat != "NS/NR")
   if (orden == "frecuencia") {
-    t <- t |>
+    t |>
       mutate(es_ns = cat %in% c("NS/NR", "Otros", "Otros/NS/NR", "Otras/NS/NR", "Otro")) |>
       arrange(es_ns, desc(pct))
   } else if (orden == "escala") {
     # Escala: polo positivo arriba, NS/NR al final
-    t <- t |> mutate(es_ns = cat == "NS/NR") |> arrange(es_ns, desc(as.integer(cat)))
+    t |> mutate(es_ns = cat == "NS/NR") |> arrange(es_ns, desc(as.integer(cat)))
   } else {
-    t <- t |> mutate(es_ns = cat == "NS/NR") |> arrange(es_ns, cat)
+    t |> mutate(es_ns = cat == "NS/NR") |> arrange(es_ns, cat)
   }
+}
+
+#' Barras horizontales, una serie (panel Total)
+graf_barras <- function(t, colores = NULL, orden = c("frecuencia", "escala", "fijo")) {
+  t <- ordenar_total(t, orden)
   cats <- as.character(t$cat)
   fill <- if (is.null(colores)) rep(AZUL, length(cats)) else unname(colores[cats])
   fill[is.na(fill)] <- AZUL
@@ -467,10 +473,131 @@ graf_agrupado <- function(t, filas, grupos, colores, sufijo = "%", max = NULL, d
   ec(opt, max(alto, 160), movil, h_ley + 52 + length(filas) * (k * 13 + 40))
 }
 
+# Tablas por grupo ----------------------------------------------------------------
+# Las mismas cifras que la tabla «por grupo» del informe impreso
+# (../Informe_EBD2025): el informe las compone en LaTeX, el sitio en HTML
+# dentro de un desplegable bajo el gráfico.
+
+#' Columnas de la tabla: Total + grupos de cada cruce
+columnas_cruce <- function(cruzar = names(cruces)) {
+  bind_rows(
+    tibble::tibble(cruce = "total", grupo = "Total"),
+    map_dfr(cruzar, function(by) {
+      tibble::tibble(cruce = by, grupo = levels(droplevels(ebd[[by]])))
+    })
+  )
+}
+
+#' Cifras de una pregunta de respuesta única: matriz con una fila por
+#' categoría de `filas` (% dentro de cada grupo, NS/NR en la base) y una
+#' columna por fila de `cols`. En escalas numéricas, una sola fila con el
+#' promedio por grupo (excluye NS/NR).
+valores_cruce <- function(var, filas, tipo, cols = columnas_cruce()) {
+  por_grupo <- setdiff(unique(cols$cruce), "total")
+  clave <- paste(cols$cruce, cols$grupo)
+  if (tipo == "numerica") {
+    m <- bind_rows(
+      media_escala(var) |> mutate(cruce = "total"),
+      map_dfr(por_grupo, ~ media_escala(var, .x) |> mutate(cruce = .x))
+    )
+    return(matrix(m$media[match(clave, paste(m$cruce, m$grupo))], nrow = 1))
+  }
+  largo <- bind_rows(
+    tab_pct(var) |> mutate(cruce = "total", grupo = as.character(grupo)),
+    map_dfr(por_grupo, ~ tab_pct(var, .x) |> mutate(cruce = .x, grupo = as.character(grupo)))
+  ) |> mutate(cat = as.character(cat))
+  v <- map(filas, function(f) {
+    sub <- largo |> filter(cat == f)
+    x <- sub$pct[match(clave, paste(sub$cruce, sub$grupo))]
+    replace(x, is.na(x), 0)
+  })
+  do.call(rbind, v)
+}
+
+#' Cifras de una batería: % favorable de cada ítem (filas, en el orden de
+#' `items_orden`) por grupo
+valores_bateria <- function(items_orden, favorables, cols = columnas_cruce()) {
+  v <- map(names(items_orden), function(var) {
+    map_dbl(seq_len(nrow(cols)), function(i) {
+      by <- if (cols$cruce[i] == "total") NULL else cols$cruce[i]
+      t <- tab_pct(var, by) |> filter(as.character(grupo) == cols$grupo[i])
+      sum(t$pct[t$cat %in% favorables])
+    })
+  })
+  do.call(rbind, v)
+}
+
+#' «Por sexo, edad, GSE y territorio»
+etiqueta_cruces <- function(cruzar) {
+  nombres <- unname(cruces[cruzar])
+  nombres <- ifelse(nombres == "GSE", nombres, tolower(nombres))
+  if (length(nombres) > 1) {
+    nombres <- c(paste(head(nombres, -1), collapse = ", "), tail(nombres, 1))
+  }
+  paste("Por", paste(nombres, collapse = " y "))
+}
+
+#' Tabla desplegable bajo el gráfico. `etiquetas`: nombre de cada fila de
+#' `valores`; las filas NS/NR van en gris itálica, como en el informe.
+tabla_desplegable <- function(etiquetas, valores, cols, texto = NULL, nota = NULL) {
+  hay_cruces <- any(cols$cruce != "total")
+  es_total <- cols$cruce == "total"
+  bloques <- rle(cols$cruce[!es_total])
+  # Primera columna de cada cruce: lleva un filete a la izquierda
+  inicios <- which(cols$cruce != lag(cols$cruce, default = "") & !es_total)
+
+  encabezado <- if (hay_cruces) {
+    tags$thead(
+      tags$tr(
+        tags$td(rowspan = 2),
+        tags$th(scope = "col", rowspan = 2, class = "tc-total", "Total"),
+        map2(bloques$values, bloques$lengths, function(by, k) {
+          tags$th(scope = "colgroup", colspan = k, class = "tc-cruce", cruces[[by]])
+        })
+      ),
+      tags$tr(map(which(!es_total), function(j) {
+        # Los encabezados van en una línea; solo los de territorio se parten
+        nombre <- switch(cols$grupo[j],
+          "Pta. Arenas" = HTML("Pta.<br>Arenas"),
+          "Resto de la región" = HTML("Resto de<br>la región"),
+          cols$grupo[j]
+        )
+        tags$th(scope = "col", class = if (j %in% inicios) "tc-inicio", nombre)
+      }))
+    )
+  } else {
+    tags$thead(tags$tr(tags$td(), tags$th(scope = "col", class = "tc-total", "Total")))
+  }
+
+  cuerpo <- tags$tbody(map(seq_along(etiquetas), function(r) {
+    tags$tr(
+      class = if (etiquetas[r] == "NS/NR") "tc-ns",
+      tags$th(scope = "row", etiquetas[r]),
+      map(seq_len(nrow(cols)), function(j) {
+        clase <- c(if (es_total[j]) "tc-total", if (j %in% inicios) "tc-inicio")
+        tags$td(class = if (length(clase)) paste(clase, collapse = " "), num(valores[r, j]))
+      })
+    )
+  }))
+
+  tags$details(
+    class = "q-tabla",
+    tags$summary(tags$span(class = "q-tabla-ver", "Ver tabla"),
+                 tags$span(class = "q-tabla-ocultar", "Ocultar tabla")),
+    if (hay_cruces) tags$p(class = "q-tabla-etiqueta", etiqueta_cruces(setdiff(unique(cols$cruce), "total"))),
+    div(
+      class = "q-tabla-scroll", tabindex = "0",
+      tags$table(class = paste("tabla-cruce", if (!hay_cruces) "tc-simple"),
+                 `aria-label` = texto, encabezado, cuerpo)
+    ),
+    if (!is.null(nota)) tags$p(class = "q-tabla-nota", HTML(nota))
+  )
+}
+
 # Bloques de pregunta ------------------------------------------------------------
 
 #' Contenedor con pestañas (Total / Sexo / Edad / GSE / Territorio)
-bloque_tabs <- function(id, paneles, texto = NULL) {
+bloque_tabs <- function(id, paneles, texto = NULL, tabla = NULL) {
   botones <- imap(paneles, function(pn, i) {
     tags$button(
       class = paste("q-tab", if (i == 1) "activo"), type = "button", role = "tab",
@@ -491,6 +618,7 @@ bloque_tabs <- function(id, paneles, texto = NULL) {
     if (!is.null(texto)) tags$p(class = "q-texto", tags$b("P:"), " ", texto),
     if (length(paneles) > 1) div(class = "q-tabs", role = "tablist", `aria-label` = "Desagregación", botones),
     div(class = "q-paneles", cuerpos),
+    tabla,
     tags$p(class = "q-fuente", "Fuente: UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025.")
   )
 }
@@ -567,7 +695,24 @@ bloque <- function(var, texto = NULL, tipo = c("nominal", "escala", "numerica"),
       titulo = cruces[[by]], grafico = g, nota = nota
     )
   }
-  bloque_tabs(var, paneles, texto)
+
+  # Tabla: mismas filas que el gráfico Total (o las `top` más frecuentes)
+  cols <- columnas_cruce(cruzar)
+  if (tipo == "numerica") {
+    k <- length(niveles)
+    filas <- paste0("Promedio (escala 1–", k, ")")
+    nota_tabla <- "La tabla muestra el promedio de la escala por grupo; excluye NS/NR."
+  } else {
+    orden <- if (tipo == "escala") "escala" else if (orden_fijo) "fijo" else "frecuencia"
+    filas <- as.character(ordenar_total(t0, orden)$cat)
+    nota_tabla <- NULL
+    if (!is.null(top)) {
+      filas <- head(setdiff(filas, c("NS/NR", "Otros")), top)
+      nota_tabla <- paste0("La tabla muestra las ", top, " respuestas más frecuentes.")
+    }
+  }
+  tabla <- tabla_desplegable(filas, valores_cruce(var, filas, tipo, cols), cols, texto, nota_tabla)
+  bloque_tabs(var, paneles, texto, tabla)
 }
 
 #' Batería de ítems con la misma escala.
@@ -608,7 +753,14 @@ bloque_bateria <- function(id, items, n_neg, neutral = NULL, favorables,
       nota = paste0("Porcentaje que responde <b>", etiqueta_fav, "</b>.")
     )
   }
-  bloque_tabs(id, paneles, texto)
+
+  cols <- columnas_cruce(cruzar)
+  items_orden <- items[fav$item]
+  tabla <- tabla_desplegable(
+    unname(items_orden), valores_bateria(items_orden, favorables, cols), cols, texto,
+    paste0("La tabla muestra el porcentaje que responde <b>", etiqueta_fav, "</b>.")
+  )
+  bloque_tabs(id, paneles, texto, tabla)
 }
 
 #' Entrevistas sin ponderar por grupo de análisis (única mención del n en el sitio)

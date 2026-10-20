@@ -267,11 +267,12 @@ Campo noche + foto + trama de puntos (150×190px, arriba a la derecha) + titular
 Sin tarjeta. Anatomía fija, en orden:
 1. Filete noche de 2px.
 2. Enunciado: «**P:**» en noche recta + texto en itálica violeta claro (0.95rem).
-3. Pestañas Total / Sexo / Edad / GSE / Territorio: etiquetas en mayúsculas espaciadas, tinta 3; hover noche con subrayado lila; activa noche con subrayado magenta de 3px; filete lila bajo la fila. Flechas izquierda/derecha cambian de pestaña. Los paneles ocultos usan `visibility`, no `display:none`, para que echarts mida el ancho real.
+3. Pestañas Total / Sexo / Edad / GSE / Territorio: etiquetas en mayúsculas espaciadas, tinta 3; hover noche con subrayado lila; activa noche con subrayado magenta de 3px; filete lila bajo la fila. Flechas izquierda/derecha cambian de pestaña. Los paneles ocultos usan `visibility`, no `display:none`, para que echarts mida el ancho real, y alto 0 con `overflow: hidden`: si conservan su alto, la celda de Quarto (`.cell-output-display`, overflow auto) envuelve el gráfico en una ventana con scroll.
 4. Nota opcional (0.86rem, tinta 2).
 5. Gráfico.
 6. Pie sobre filete lila: NS/NR, promedio u orden de los ítems. Sin n ni prueba de significación (decisión 2026-10-14).
-7. Línea de fuente en itálica 13px: «Fuente: UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025.»
+7. Tabla desplegable (`<details>`, cerrada por defecto): «Ver tabla / Ocultar tabla» en mayúsculas espaciadas violeta con chevron. Dentro, la tabla «por grupo» del informe impreso: Total en negrita noche + grupos de cada cruce bajo encabezados en mayúsculas tinta 3, filetes lila entre filas y entre cruces, NS/NR en itálica tinta 3, sin franjas. En celular se desplaza dentro de su caja con la primera columna fija. Sin cruces (Participantes) queda solo la columna Total, de 26rem.
+8. Línea de fuente en itálica 13px: «Fuente: UER-UMAG, Encuesta Bienestar y Desarrollo Magallanes 2025.»
 
 ### Gráficos
 - **Barras horizontales (Total):** violeta, o colores divergentes en escalas; etiquetas de categoría en noche 14px; valor en negrita 13px a la derecha, con coma decimal; sin ejes visibles. NS/NR al final, en gris.
