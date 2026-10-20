@@ -24,7 +24,3 @@ bloque("d1",
 `r P("d1", DEMO)` de las personas considera que la democracia es preferible a cualquier otra forma de gobierno. Una de cada cuatro (`r P("d1", LOMISMO)`) se muestra indiferente ante el tipo de régimen y `r P("d1", AUTOR)` justificaría, en algunas circunstancias, un gobierno autoritario.
 
 El apoyo a la democracia no varía por sexo, edad ni territorio, pero sí —y de forma muy marcada— por nivel socioeconómico: alcanza `r P("d1", DEMO, "gse2", "ABC1")` en el grupo ABC1 y cae a `r P("d1", DEMO, "gse2", "D-E")` en el D-E. En este último grupo la indiferencia frente al régimen llega a `r P("d1", LOMISMO, "gse2", "D-E")`, casi tanto como el apoyo a la democracia.
-
-::: {.cita}
-En el grupo D-E, la indiferencia frente al tipo de régimen (`r P("d1", LOMISMO, "gse2", "D-E")`) casi iguala al apoyo a la democracia (`r P("d1", DEMO, "gse2", "D-E")`).
-:::

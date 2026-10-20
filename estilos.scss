@@ -131,25 +131,6 @@ html { scrollbar-color: var(--violeta-claro) var(--lavanda); }
 }
 .quarto-title-meta, .quarto-title-banner .description { display: none; }
 
-/* Cita destacada: itálica magenta del impreso */
-.cita {
-  margin: 2.4rem 0 2.6rem;
-  padding: 0 0 0 1.4rem;
-  max-width: 40rem;
-  font-style: italic;
-  font-weight: 500;
-  font-size: clamp(1.2rem, 2vw, 1.42rem);
-  line-height: 1.42;
-  color: var(--magenta);
-  position: relative;
-}
-.cita::before {
-  content: "";
-  position: absolute; left: 0; top: .35em; bottom: .35em;
-  width: 1px; background: var(--magenta);
-}
-.cita p { margin: 0; text-align: left !important; }
-
 /* Cabecera corrida del impreso, bajo cada apertura */
 #title-block-header::after {
   content: "ENCUESTA DE BIENESTAR Y DESARROLLO MAGALLANES 2025";

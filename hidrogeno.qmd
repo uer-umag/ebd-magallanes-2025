@@ -158,10 +158,6 @@ bloque_bateria("b10",
 
 El apoyo a la industria convive con una evaluación crítica del proceso. Más de la mitad (`r P("b10_c", DESAC)`) está en desacuerdo con que las empresas hayan entregado información clara y oportuna, y `r P("b10_b", DESAC)` rechaza que la política haya sido participativa. La capacidad regional de fiscalización divide a la opinión en dos mitades.
 
-::: {.cita}
-El apoyo a la industria convive con una evaluación crítica del proceso: más de la mitad cuestiona la información entregada por las empresas.
-:::
-
 ### Transparencia y justicia de las decisiones {#b11}
 
 ```{r}

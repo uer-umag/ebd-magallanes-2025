@@ -68,11 +68,6 @@ typography:
     fontWeight: 800
     lineHeight: 1
     fontFeature: "tnum"
-  cita:
-    fontFamily: "Asap, system-ui, sans-serif"
-    fontSize: "clamp(1.2rem, 2vw, 1.42rem)"
-    fontWeight: 500
-    lineHeight: 1.42
   body:
     fontFamily: "Asap, system-ui, sans-serif"
     fontSize: "17.5px"
@@ -124,10 +119,6 @@ components:
   pestana-activa:
     textColor: "{colors.noche}"
     typography: "{typography.label}"
-  cita:
-    textColor: "{colors.magenta}"
-    typography: "{typography.cita}"
-    padding: "0 0 0 1.4rem"
   indice:
     backgroundColor: "{colors.noche}"
     textColor: "{colors.papel}"
@@ -164,7 +155,7 @@ La fotografía proviene de los Boletines N°1 y N°2 y siempre lleva crédito ve
 - Cabecera corrida en itálica violeta «BOLETÍN DE ESTUDIOS REGIONALES / UER-UMAG» con filete bajo cada apertura.
 - Figuras sin tarjeta: filete noche de 2px arriba, filetes lila finos dentro.
 - Bitter (sustituto web de Museo Slab) para titulares, bajadas, rótulos y cifras; Asap para todo lo demás, incluidos los gráficos.
-- Magenta como señal, no como relleno: barras de bajada, citas, estados activos, marcador de significancia.
+- Magenta como señal, no como relleno: barras de bajada, estados activos, marcador de significancia.
 - Gráficos echarts con paletas validadas para daltonismo deutan.
 
 ## Colors
@@ -177,7 +168,7 @@ Una noche violeta profunda como campo, violetas medios como voz del dato, y tres
 - **Violeta claro** (violeta-claro): voz secundaria en itálica: enunciado de la pregunta, cabecera corrida y su filete, título del índice lateral, barra de desplazamiento.
 
 ### Secondary
-- **Magenta del boletín** (magenta): barras detrás de la bajada, citas destacadas y su filete de 1px, subrayado del enlace activo de la barra de navegación, estado activo de pestañas y del índice lateral, punto de «diferencia significativa», filete superior del tooltip, foco (`outline` de 2px) y selección de texto.
+- **Magenta del boletín** (magenta): barras detrás de la bajada, subrayado del enlace activo de la barra de navegación, estado activo de pestañas y del índice lateral, punto de «diferencia significativa», filete superior del tooltip, foco (`outline` de 2px) y selección de texto.
 - **Magenta sobre noche** (magenta-sobre-noche): la versión clara del magenta para cifras grandes sobre campo noche (índice de resultados clave), donde el magenta pleno no alcanza contraste.
 
 ### Tertiary
@@ -199,7 +190,7 @@ Una noche violeta profunda como campo, violetas medios como voz del dato, y tres
 - **Divergente** (escalas de acuerdo/satisfacción): ámbar oscuro y ámbar al lado negativo, gris lila al centro, turquesa claro y turquesa profundo al positivo. NS/NR va en gris (grafico-nsnr). Texto dentro de segmentos claros en noche, en segmentos oscuros en blanco.
 
 ### Named Rules
-**The Señal Magenta Rule.** El magenta marca lo que el lector debe notar o donde está: bajada, cita, estado activo, significancia. Nunca rellena barras de datos ni superficies.
+**The Señal Magenta Rule.** El magenta marca lo que el lector debe notar o donde está: bajada, estado activo, significancia. Nunca rellena barras de datos ni superficies.
 
 **The Ámbar↔Turquesa Rule.** Las escalas divergentes van de ámbar (negativo) a turquesa (positivo) con gris al centro. Magenta↔turquesa está descartado por falla deutan.
 
@@ -217,7 +208,6 @@ Una noche violeta profunda como campo, violetas medios como voz del dato, y tres
 - **Headline** (Asap 800, 1.62rem): encabezados de sección, en turquesa.
 - **Title** (Asap 700, 1.26rem): título de cada pregunta, en noche.
 - **Cifra** (Bitter 800 itálica, 2.15rem, cifras tabulares): porcentajes del índice de resultados clave.
-- **Cita** (Asap 500 itálica, clamp(1.2rem, 2vw, 1.42rem), 1.42): cita destacada magenta.
 - **Body** (Asap 400, raíz 17.5px, 1.62): comentario; máximo 70ch, justificado con guiones desde 768px.
 - **Label** (Asap 700, 0.76rem, 0.1em, mayúsculas): pestañas de desagregación.
 - **Pie** (Asap 13–13.5px): pie de figura.
@@ -280,9 +270,6 @@ Sin tarjeta. Anatomía fija, en orden:
 - **Columnas (escalas 1–7, 1–10):** violeta, valor encima.
 - **Tooltip:** blanco, borde lila #d9d3e4, filete superior magenta, nombre en negrita, valor y n.
 
-### Cita destacada
-Itálica magenta 500 con filete vertical magenta de 1px a la izquierda; máximo 40rem. Como máximo una por página de sección.
-
 ### Portada
 Foto en duotono violeta a sangre; franja turquesa vertical «EBD Magallanes / Noviembre 2025»; titular en mayúsculas liviano + extra negro; lista de temas en mayúsculas separados por «/» ámbar, cada tema un enlace con subrayado blanco al 35% (magenta al pasar); dos llamadas a la acción rectangulares (sin redondeo): «Descargar informe de resultados» en magenta lleno con flecha ↗ y peso del PDF (abre el PDF en una pestaña nueva), «Acceso a base de datos» con filete blanco de 2px y flecha → hacia Datos; título en mayúsculas espaciadas 0.95rem y detalle de 0.82rem debajo; bajo 560px se apilan a todo el ancho. Al final, el logo UER blanco.
 
@@ -291,6 +278,8 @@ Campo noche a sangre; rótulo «ÍN/DI/CE» gigante en Asap 300; grupos con rót
 
 ### Ficha técnica
 Lista de definiciones en dos columnas (término violeta 700 + valor), filete noche de 2px arriba y lila entre filas; una columna bajo 768px.
+
+Sin citas destacadas (decisión 2026-10-20): los hallazgos van en la prosa, no en frases resaltadas en color.
 
 ## Do's and Don'ts
 
