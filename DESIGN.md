@@ -284,7 +284,7 @@ Sin tarjeta. Anatomía fija, en orden:
 Itálica magenta 500 con filete vertical magenta de 1px a la izquierda; máximo 40rem. Como máximo una por página de sección.
 
 ### Portada
-Foto en duotono violeta a sangre; franja turquesa vertical «EBD Magallanes / Noviembre 2025»; titular en mayúsculas liviano + extra negro; lista de temas en mayúsculas separados por «/» ámbar, cada tema un enlace con subrayado blanco al 35% (magenta al pasar); logo UER blanco y línea de ficha.
+Foto en duotono violeta a sangre; franja turquesa vertical «EBD Magallanes / Noviembre 2025»; titular en mayúsculas liviano + extra negro; lista de temas en mayúsculas separados por «/» ámbar, cada tema un enlace con subrayado blanco al 35% (magenta al pasar); dos llamadas a la acción rectangulares (sin redondeo): «Descargar informe de resultados» en magenta lleno con flecha ↓ y peso del PDF, «Acceso a base de datos» con filete blanco de 2px y flecha → hacia Datos; título en mayúsculas espaciadas 0.95rem y detalle de 0.82rem debajo; bajo 560px se apilan a todo el ancho. Al final, el logo UER blanco.
 
 ### Índice de resultados clave
 Campo noche a sangre; rótulo «ÍN/DI/CE» gigante en Asap 300; grupos con rótulo turquesa claro sobre filete blanco al 55%; filas con cifra Bitter itálica magenta clara + texto lila claro, filete blanco al 18%; hover con velo magenta al 14%. Cada fila enlaza a su figura.

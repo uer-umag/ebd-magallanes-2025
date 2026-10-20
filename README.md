@@ -93,6 +93,7 @@ incrustado en los metadatos de cada archivo.
 ```bash
 Rscript 4_scripts/05_bases_publicas.R      # bases .rds/.dta/.sav (versión anonimizada)
 6_Reportes/Libro_Codigos/compilar.sh       # libro de códigos PDF (se copia a descargas/)
+6_Reportes/Informe_EBD2025/compilar.sh     # informe de resultados PDF (portada y Datos; se copia a descargas/)
 ```
 
 El cuestionario (`EBD_Magallanes_2025_cuestionario.pdf`) es copia de

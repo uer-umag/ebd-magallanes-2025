@@ -46,6 +46,8 @@ tagList(
   ),
   tags$h3(class = "descargas-grupo", "Documentación"),
   tags$ul(class = "descargas",
+    descarga("PDF", "EBD_Magallanes_2025_informe_resultados.pdf", "Informe de resultados",
+             "Versión impresa de este sitio: resultados por módulo, tablas por grupo y metodología."),
     descarga("PDF", "EBD_Magallanes_2025_libro_codigos.pdf", "Libro de códigos",
              "Nombre, pregunta, códigos, etiquetas y distribución ponderada de cada variable."),
     descarga("PDF", "EBD_Magallanes_2025_cuestionario.pdf", "Cuestionario",

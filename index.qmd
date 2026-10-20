@@ -25,6 +25,8 @@ temas <- list(
   c("metodologia.html", "Metodología"),
   c("datos.html", "Datos")
 )
+# PDF copiado por Informe_EBD2025/compilar.sh
+informe_pdf <- "descargas/EBD_Magallanes_2025_informe_resultados.pdf"
 ```
 
 ```{r}
@@ -45,6 +47,16 @@ tags$section(class = "portada", style = "background-image:url('img/fotos/portada
         tags$a(href = temas[[i]][1], temas[[i]][2]),
         if (i < length(temas)) span(class = "sep", `aria-hidden` = "true", " / ")
       ))
+    ),
+    div(class = "portada-acciones",
+      tags$a(class = "portada-accion principal", href = informe_pdf, download = NA,
+        span(class = "accion-titulo", "Descargar informe de resultados"),
+        span(class = "accion-detalle", paste0("PDF · ", num(file.size(informe_pdf) / 1024^2, 1), " MB"))
+      ),
+      tags$a(class = "portada-accion", href = "datos.html",
+        span(class = "accion-titulo", "Acceso a base de datos"),
+        span(class = "accion-detalle", "R · Stata · SPSS · libro de códigos")
+      )
     ),
     div(class = "portada-pie",
       tags$img(src = "img/logo_uer_blanco.png", alt = "Unidad de Estudios Regionales, Universidad de Magallanes")
